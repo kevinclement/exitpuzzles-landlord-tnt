@@ -1,8 +1,11 @@
 #ifndef MYKEYPAD_h
 #define MYKEYPAD_h
 
-#include <Keypad.h>
+#include "Keypad_I2C.h"
+
 class Conditions;
+
+const uint8_t I2CADDR = 0x20;
 
 // Password settings
 #define PASSWORD "419268128453464"  // required password to win
@@ -16,6 +19,7 @@ public:
   String getIncorrectCodeMessage();
   void resetPassword();
   void setEnabled(bool enabled);
+  void setup();
   void teardown();
 
 private:
@@ -26,7 +30,7 @@ private:
   String _realPassword = PASSWORD;
   byte _passwordLimit = _realPassword.length();
   String _curPassword = "";
-  Keypad _keypad;  
+  Keypad_I2C _keypad;  
 };
 
 #endif

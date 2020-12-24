@@ -20,6 +20,9 @@ void Conditions::setup() {
   // Initialize the serial so we can debug
   serial.setup();
 
+  // Setup the keypad
+  keypad.setup();
+
   // Setup the buttons
   buttons.setup();
   
