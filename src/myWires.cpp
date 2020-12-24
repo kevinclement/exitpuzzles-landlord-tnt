@@ -15,15 +15,17 @@ void MyWires::setup() {
 }
 
 void MyWires::checkWire(int reading, int onBegVal, int onEndVal, int offVal, bool &wireOn) {
-  // wire on state
-  if (reading >= onBegVal && reading < onEndVal && !wireOn) {
-    wireOn = true;
-  }
+  // TODO: FIX
 
-  // wire off state
-  if (reading >= offVal && wireOn) {
-    wireOn = false;
-  }
+  // // wire on state
+  // if (reading >= onBegVal && reading < onEndVal && !wireOn) {
+  //   wireOn = true;
+  // }
+
+  // // wire off state
+  // if (reading >= offVal && wireOn) {
+  //   wireOn = false;
+  // }
 }
 
 
@@ -31,10 +33,12 @@ void MyWires::handle() {
 
   //int wireReading = analogRead(BADWIRE);
   //Serial.println(wireReading);
-  //int wire1Reading = analogRead(WIRE1);
-  //Serial.println(wire1Reading);
-  //int wire3Reading = analogRead(WIRE3);
-  //Serial.println(wire3Reading);
+  // Serial.print("wire2: ");
+  // Serial.print(analogRead(WIRE2));
+  // Serial.print(" wire3: ");
+  // Serial.print(analogRead(WIRE3));
+  // Serial.print(" bad: ");
+  // Serial.println(analogRead(BADWIRE));
   
   checkWire(analogRead(WIRE1), 20,  40,  800, wire1);
   checkWire(analogRead(WIRE2), 220, 350, 800, wire2);
