@@ -18,17 +18,10 @@ void MyButtons::handle() {
   if (!enabled) {
     return;
   }
-  
-  int btn1Reading = analogRead(TOGGLE_BUTTON1);
-  int btn2Reading = analogRead(TOGGLE_BUTTON2);
-  int winReading = analogRead(WINBTN);
-  
-  // TMP
-  ///////////////////////////////////////////
-  // Note: 50is when its up
-  // Note: 1000> when its down
-  // Need to see it go from down to up to down  
-  ////////////////////////////////////////////
+
+  int btn1Reading = digitalRead(TOGGLE_BUTTON1);
+  int btn2Reading = digitalRead(TOGGLE_BUTTON2);
+  int winReading = digitalRead(WINBTN);
 
   checkButton(btn1Reading, btn1);
   checkButton(btn2Reading, btn2);
@@ -81,12 +74,12 @@ void MyButtons::teardown() {
 void MyButtons::checkButton(int reading, bool &btnOn) {
   
   // button switched on state
-  if (reading > 500 && !btnOn) {
+  if (reading == LOW && !btnOn) {
     btnOn = true;
   }
 
   // buttons switched to off state
-  if (reading <= 500 && btnOn) {
+  if (reading == HIGH && btnOn) {
     btnOn = false;
   }
 }

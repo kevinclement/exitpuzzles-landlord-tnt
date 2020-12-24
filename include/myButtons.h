@@ -5,7 +5,7 @@ class Conditions;
 
 // Toggle Buttons Settings
 #define TOGGLE_BUTTON1 7 // input toggle button1
-#define TOGGLE_BUTTON2 6  // input toggle button2
+#define TOGGLE_BUTTON2 6 // input toggle button2
 #define TOGGLE_BUTTON3 5 // input toggle button3
 #define TOGGLE_BUTTON4 4 // input toggle button4
 #define TOGGLE_BUTTON5 3 // input toggle button5
