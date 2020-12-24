@@ -16,9 +16,9 @@ class Conditions;
 
 // Display Settings
 #define DSP_BRIGHTNESS 1  // brightness level (0 is min, 15 is max) 
-#define DSP_DIN        4  // pin 4 to DIN
-#define DSP_CLK        3  // pin 3 to Clock
-#define DSP_LOAD       2  // pin 2 to Load
+#define DSP_DIN        11  // pin 4 to DIN
+#define DSP_CLK        12  // pin 3 to Clock
+#define DSP_LOAD       13  // pin 2 to Load
 
 class MyTimer {
 public:

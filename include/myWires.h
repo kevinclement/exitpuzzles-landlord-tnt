@@ -3,6 +3,12 @@
 
 class Conditions;
 
+// Wire input locations
+#define WIRE1   A0 // TODO: MAP PROPERLY
+#define WIRE2   A1
+#define WIRE3   A2
+#define BADWIRE A3
+
 class MyWires {
 public:
   MyWires(Conditions &conditions);

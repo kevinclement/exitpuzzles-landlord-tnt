@@ -3,6 +3,9 @@
 
 class Conditions;
 
+#define LS_PIN A11
+#define LS_THRESHOLD 750
+
 class MyLightSensor {
 public:
   MyLightSensor(Conditions &conditions);
@@ -13,8 +16,6 @@ public:
 private:
   Conditions &_conditions;
 
-  int lightPin = 1;
-  int threshold = 750;
   bool sawLight = false;
 };
 

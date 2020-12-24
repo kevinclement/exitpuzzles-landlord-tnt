@@ -11,7 +11,7 @@ void MyLightSensor::setup() {
 
 // Main loop function
 void MyLightSensor::handle() {
-  bool light = analogRead(lightPin) < threshold;
+  bool light = analogRead(LS_PIN) < LS_THRESHOLD;
   if (light && !sawLight) {
     sawLight = true;
     _conditions.lightSensed();

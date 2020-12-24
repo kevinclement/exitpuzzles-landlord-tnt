@@ -1,11 +1,6 @@
 #include "Arduino.h"
 #include "conditions.h"
 
-// Toggle Buttons Settings
-#define TOGGLE_BUTTON1 A3 // input toggle button1
-#define TOGGLE_BUTTON2 A2 // input toggle button2
-#define WINBTN         A0 // location of win button
-
 MyButtons::MyButtons(Conditions &conditions)
   : _conditions(conditions)
 {  

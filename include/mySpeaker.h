@@ -1,6 +1,10 @@
 #ifndef MYSPEAKER_h
 #define MYSPEAKER_h
 
+// Buzzer Settings
+#define BUZZ A10         // pin 5 to Buzzer
+#define FAILURE_BEEPS 3  // How many times to beep on failure
+
 class MySpeaker {
 public:
   MySpeaker();

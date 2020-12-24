@@ -1,11 +1,6 @@
 #include "Arduino.h"
 #include "conditions.h"
 
-// Wire input locations
-#define PIN_RELAY   22 // Relay pin
-#define RELAY_ON    0
-#define RELAY_OFF   1
-
 MyKeyShooter::MyKeyShooter(Conditions &conditions)
   : _conditions(conditions)
 {  

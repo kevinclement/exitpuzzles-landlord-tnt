@@ -2,12 +2,6 @@
 #include "conditions.h"
 #include <Bounce2.h>
 
-// Wire input locations
-#define WIRE1   A8
-#define WIRE2   A9
-#define WIRE3   A10
-#define BADWIRE A4
-
 MyWires::MyWires(Conditions &conditions)
   : _conditions(conditions)
 {  

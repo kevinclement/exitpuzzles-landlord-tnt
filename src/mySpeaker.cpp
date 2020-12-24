@@ -3,10 +3,6 @@
 #include "mySpeaker.h"
 #include "rtttl.h"
 
-// Buzzer Settings
-#define BUZZ 5          // pin 5 to Buzzer
-#define FAILURE_BEEPS 3 // How many times to beep on failure
-
 MySpeaker::MySpeaker()
 {  
 }
