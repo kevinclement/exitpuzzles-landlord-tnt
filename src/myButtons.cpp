@@ -9,6 +9,9 @@ MyButtons::MyButtons(Conditions &conditions)
 void MyButtons::setup() {
   pinMode(TOGGLE_BUTTON1, INPUT_PULLUP);
   pinMode(TOGGLE_BUTTON2, INPUT_PULLUP);
+  pinMode(TOGGLE_BUTTON3, INPUT_PULLUP);
+  pinMode(TOGGLE_BUTTON4, INPUT_PULLUP);
+  pinMode(TOGGLE_BUTTON5, INPUT_PULLUP);
   pinMode(WINBTN, INPUT_PULLUP); 
 }
 
@@ -19,16 +22,19 @@ void MyButtons::handle() {
     return;
   }
 
-  int btn1Reading = digitalRead(TOGGLE_BUTTON1);
-  int btn2Reading = digitalRead(TOGGLE_BUTTON2);
-  int winReading = digitalRead(WINBTN);
+  checkButton(!digitalRead(TOGGLE_BUTTON1), curToggles[0]);
+  checkButton(!digitalRead(TOGGLE_BUTTON2), curToggles[1]);
+  checkButton(!digitalRead(TOGGLE_BUTTON3), curToggles[2]);
+  checkButton(!digitalRead(TOGGLE_BUTTON4), curToggles[3]);
+  checkButton(!digitalRead(TOGGLE_BUTTON5), curToggles[4]);
 
-  checkButton(btn1Reading, btn1);
-  checkButton(btn2Reading, btn2);
-  checkButton(winReading, winBtn);
+  checkButton(digitalRead(WINBTN), winBtn);
 
-  if ((btn1 != lastBtn1) || 
-      (btn2 != lastBtn2) || 
+  if ((curToggles[0] != lastToggles[0]) || 
+      (curToggles[1] != lastToggles[1]) || 
+      (curToggles[2] != lastToggles[2]) || 
+      (curToggles[3] != lastToggles[3]) || 
+      (curToggles[4] != lastToggles[4]) || 
       (winBtn != lastWin)) {
     lastDebounceTime = millis();
   }
@@ -36,18 +42,14 @@ void MyButtons::handle() {
   // debounce the button changes
   if ((millis() - lastDebounceTime) > debounceDelay) {
 
-    // Check button1 change
-    if (btn1 != btn1State) {
-      btn1State = btn1;
-      _conditions.stateChange();
+    // Check toggles change
+    for (int i=0; i<5; i++) {
+      if (toggles[i] != curToggles[i]) {
+        toggles[i] = curToggles[i];
+        _conditions.toggleStateChange();
+      }
     }
 
-    // Check button2 change
-    if (btn2 != btn2State) {
-      btn2State = btn2;
-      _conditions.stateChange();
-    }
-    
     // Check win condition
     if (winBtn != winState && !_conditions._overrideWinButton) {
       winState = winBtn;
@@ -62,8 +64,10 @@ void MyButtons::handle() {
     }
   }
 
-  lastBtn1 = btn1;
-  lastBtn2 = btn2;
+  for (int i=0; i<5; i++) {
+    lastToggles[i] = curToggles[i];
+  }
+
   lastWin = winBtn;
 }
 
@@ -74,12 +78,12 @@ void MyButtons::teardown() {
 void MyButtons::checkButton(int reading, bool &btnOn) {
   
   // button switched on state
-  if (reading == LOW && !btnOn) {
+  if (reading == HIGH && !btnOn) {
     btnOn = true;
   }
 
   // buttons switched to off state
-  if (reading == HIGH && btnOn) {
+  if (reading == LOW && btnOn) {
     btnOn = false;
   }
 }

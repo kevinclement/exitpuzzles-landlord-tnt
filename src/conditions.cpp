@@ -173,12 +173,9 @@ void Conditions::penaltyMet() {
   keypad.setEnabled(true);
 }
 
-// New style of state change handling.
-// We just tell conditions that it needs to go figure out the state from all the objects
-// and update all the parts
-void Conditions::stateChange() {
-
-  bool badToggleOn = (buttons.btn1 || buttons.btn2) && !_overrideToggle;
+void Conditions::wireStateChange() {
+  // TODO: fix for wires only
+  bool badToggleOn = (buttons.toggles[0] || buttons.toggles[3] ) && !_overrideToggle;
   bool badWireOn = !wires.badwire && !_overrideBadWire;
 
   if (!_light) {
@@ -214,8 +211,14 @@ void Conditions::stateChange() {
     display.update(true, "Replace Red Wire");
   }
   else if (badToggleOn) {
-    display.update(true, "Incorrect Toggle");  
+    display.update(true, "Incorrect Toggle");
+    _inToggleFailState = true;
   } else {
+    if (_inToggleFailState) {
+
+    }
+
+
     // Everything is good, reset to keypad and password current
     Serial.print("Permanent penalty fixed - toggle: ");
     Serial.print(badToggleOn);
@@ -235,20 +238,70 @@ void Conditions::stateChange() {
   }
 }
 
+void Conditions::toggleStateChange() {
+  bool badToggleOn = (buttons.toggles[0] || buttons.toggles[3] ) && !_overrideToggle;
+
+  if (!_light) {
+    if (badToggleOn) {
+      Serial.println("Detected bad toggle but light is off.  Ignoring.");
+      badToggleOn = false;
+    }
+  }
+
+  if (badToggleOn && !_inToggleFailState) {
+    Serial.print("Permanent penalty set - toggle: ");
+    Serial.println(badToggleOn);
+    _inToggleFailState = true;
+    updateState();
+  }
+  else if (!badToggleOn && _inToggleFailState) {
+      Serial.print("Permanent penalty fixed - toggle: ");
+      Serial.println(badToggleOn);
+      _inToggleFailState = false;
+
+      updateState();      
+  }
+}
+
+void Conditions::updateState() {
+  // TODO: can only do this if wires aren't in a bad state too
+  // TODO: verify both bad states from wires and toggles
+
+  if (_inToggleFailState) {
+    timer.permanentPenalty(true);
+    communicate.badSwitch();
+    speaker.badSwitch();
+    keypad.setEnabled(false);
+    display.update(false, FULL_EMPTY_LINE);
+    display.update(true, "Incorrect Toggle");
+  }
+
+  // No penalties, back to normal
+  if (!_inToggleFailState) {
+    timer.permanentPenalty(false);
+    display.update(true, DEFAULT_DISPLAY);
+    display.resetCursorPosition(1, 0);
+    display.update(false, keypad.getPassword());
+    keypad.setEnabled(true);
+  }
+}
+
 // Function to override toggle error
 void Conditions::overrideToggle() {
   _overrideToggle = !_overrideToggle;
-  stateChange();
+  toggleStateChange();
 }
 
 void Conditions::overrideBadWire() {
   _overrideBadWire = !_overrideBadWire;
-  stateChange();
+  wireStateChange();
 }
 
 void Conditions::overrideWinButton() {
   _overrideWinButton = !_overrideWinButton;
-  stateChange();
+
+  // TODO: fix this?? need to call both?
+  //stateChange();
 }
 
 void Conditions::forceWin() {
@@ -296,9 +349,9 @@ void Conditions::printHelp() {
 void Conditions::printStatus() {
   Serial.println("Status: ");
   Serial.print("  toggle1: ");
-  Serial.println(buttons.btn1);
+  Serial.println(buttons.toggles[0]);
   Serial.print("  toggle2: ");
-  Serial.println(buttons.btn2);
+  Serial.println(buttons.toggles[1]);
   Serial.print("  wire: ");
   Serial.println(!wires.badwire);
   Serial.print("  key solved: ");

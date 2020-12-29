@@ -11,7 +11,8 @@ void MySerial::setup() {
   Serial.begin(9600);
   
   // set read timeout to something really low so we don't hang the 'tick'
-  Serial.setTimeout(10);
+  // Serial.setTimeout(10);
+  // TODO: switch back
   while (!Serial); // Wait untilSerial is ready 
 }
 

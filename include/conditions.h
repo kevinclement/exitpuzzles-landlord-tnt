@@ -47,17 +47,20 @@ public:
   bool hasFinished() const { return _finished; }
   bool _overrideWinButton;
 
-  void stateChange();
+  void wireStateChange();
+  void toggleStateChange();
     
 private:
   bool _finished;
   bool _solvedKey;
   bool _light = false;
   bool _codeAfterWin = true;
+  bool _inToggleFailState = false;
   bool _overrideToggle;
   bool _overrideBadWire;
 
   void teardown();
+  void updateState();
 };
 
 #endif

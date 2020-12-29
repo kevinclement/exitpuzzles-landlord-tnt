@@ -4,8 +4,8 @@
 class Conditions;
 
 // Toggle Buttons Settings
-#define TOGGLE_BUTTON1 7 // input toggle button1
-#define TOGGLE_BUTTON2 6 // input toggle button2
+#define TOGGLE_BUTTON1 6 // input toggle button1
+#define TOGGLE_BUTTON2 2 // input toggle button2
 #define TOGGLE_BUTTON3 5 // input toggle button3
 #define TOGGLE_BUTTON4 4 // input toggle button4
 #define TOGGLE_BUTTON5 3 // input toggle button5
@@ -19,17 +19,14 @@ public:
   void teardown();
 
   // expose so condition can apply logic
-  bool btn1   = false;
-  bool btn2   = false;
+  bool toggles[5] = {false, false, false, false};
   bool winBtn = false;
 
 private:
   Conditions &_conditions;
   bool enabled = true;
-  bool btn1State = false;
-  bool btn2State = false;
-  bool lastBtn1  = false;
-  bool lastBtn2  = false;
+  bool lastToggles[5] = {false, false, false, false};
+  bool curToggles[5] = {false, false, false, false};
   bool winState  = false;
   bool lastWin   = false;
   int  initialWin  = true;

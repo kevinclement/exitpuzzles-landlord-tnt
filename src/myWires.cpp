@@ -55,22 +55,22 @@ void MyWires::handle() {
   if ((millis() - lastDebounceTime) > debounceDelay) {
 
     if (wire1 != wire1State) {
-      _conditions.stateChange();      
+      _conditions.wireStateChange();      
       wire1State = wire1;
     }
 
     if (wire2 != wire2State) {
-      _conditions.stateChange();      
+      _conditions.wireStateChange();      
       wire2State = wire2;
     }
 
     if (wire3 != wire3State) {
-      _conditions.stateChange();      
+      _conditions.wireStateChange();      
       wire3State = wire3;
     }
 
     if (badwire != badwireState) {
-      _conditions.stateChange();      
+      _conditions.wireStateChange();      
       badwireState = badwire;
     }
   }
