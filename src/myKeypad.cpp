@@ -1,8 +1,6 @@
 #include "Arduino.h"
 #include "conditions.h"
 
-#include "Wire.h"
-
 // Keypad settings
 #define ROWS 4
 #define COLS 4
@@ -14,20 +12,30 @@ char keys[ROWS][COLS] = {
   {'#', '0', '*', 'D'}
 };
 
+// wires by pin on keypad: 
+//   0: UNUSED
+//   1: COL1
+//   2: COL2
+//   3: COL3
+//   4: COL4
+//   5: ROW1
+//   6: ROW2
+//   7: ROW3
+//   8: ROW4
+//   9: UNUSED
+
 // Configure the rows and columns based on the wiring
-byte rowPins[ROWS] = {3, 2, 1, 0};  //connect to the row pinouts of the keypad
-byte colPins[COLS] = {7, 6, 5, 4};  //connect to the column pinouts of the keypad
+byte rowPins[ROWS] = {30, 32, 34, 36};  //connect to the row pinouts of the keypad
+byte colPins[COLS] = {22, 24, 26, 28};  //connect to the column pinouts of the keypad
 
 MyKeyPad::MyKeyPad(Conditions &conditions)
   : _conditions(conditions),
     _display(conditions.display),
-    _keypad(Keypad_I2C(makeKeymap(keys), rowPins, colPins, ROWS, COLS, I2CADDR, PCF8574, &Wire))
+    _keypad(Keypad(makeKeymap(keys), rowPins, colPins, ROWS, COLS))
 {
 }
 
 void MyKeyPad::setup() {
-  Wire.begin();
-  _keypad.begin();
 }
 
 void MyKeyPad::teardown() {

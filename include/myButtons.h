@@ -9,7 +9,7 @@ class Conditions;
 #define TOGGLE_BUTTON3 5 // input toggle button3
 #define TOGGLE_BUTTON4 4 // input toggle button4
 #define TOGGLE_BUTTON5 3 // input toggle button5
-#define WINBTN         8 // location of win button
+#define WINBTN         9 // location of win button
 
 class MyButtons {
 public:

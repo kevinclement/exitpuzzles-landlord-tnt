@@ -3,8 +3,12 @@
 
 class Conditions;
 
-// Wire input locations
-#define WIRE1   A0 // TODO: MAP PROPERLY
+// ## Wire maping 
+// 1->4 : A0 (100k resistor - 742 avg reading)
+// B->D : A1 (4.7k resistor - 125 avg reading)
+// A->3 : A2 (10k resistor - 228 avg reading)
+// C->2 : A3 (no resistor - 15 avg reading)
+#define WIRE1   A0
 #define WIRE2   A1
 #define WIRE3   A2
 #define BADWIRE A3
