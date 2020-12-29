@@ -70,7 +70,13 @@ void MySpeaker::win() {
   beep(1500,200);
 }
 
-void MySpeaker::funSound() {
+void MySpeaker::openLock() {
+  beep(800,100);
+  delay(80);
+  beep(1050,200);
+}
+
+void MySpeaker::shootKey() {
   beep(1200,100);
   delay(80);
   beep(1200,100);

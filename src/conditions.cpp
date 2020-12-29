@@ -270,6 +270,7 @@ void Conditions::toggleStateChange() {
   // ↓  ↑  ↑  ↓  ↑ 
   if (!buttons.toggles[0] && buttons.toggles[1] && buttons.toggles[2] && !buttons.toggles[3] && buttons.toggles[4]) {
     Serial.println("Toggles Correct!");
+    speaker.openLock();
     lock.open = true;
   }
 }
@@ -323,7 +324,7 @@ void Conditions::forceWin() {
 void Conditions::shootKey() {
   if (!_solvedKey) {
     keyShooter.shoot();
-    speaker.funSound();
+    speaker.shootKey();
     _solvedKey = true;
   }
 

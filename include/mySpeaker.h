@@ -15,7 +15,8 @@ public:
   void toggleTickEnabled();
   void tickEnabled();
   void win();
-  void funSound();
+  void shootKey();
+  void openLock();
   void fail();
   void penalty();
   void badSwitch();
