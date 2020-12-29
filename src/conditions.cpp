@@ -236,34 +236,22 @@ void Conditions::toggleStateChange() {
 }
 
 void Conditions::updateState() {
-  // TODO: can only do this if wires aren't in a bad state too
-  // TODO: verify both bad states from wires and toggles
-
-  if (_inToggleFailState) {
+  if (_inToggleFailState || _inWireFailState) {
     timer.permanentPenalty(true);
     communicate.badSwitch();
     speaker.badSwitch();
     keypad.setEnabled(false);
     display.update(false, FULL_EMPTY_LINE);
-    display.update(true, "Incorrect Toggle");
   }
 
-  // TODO: should we check for !inToggleFailState here and give one a priority?
-  // that way we don't error twice
-  // or better yet, just put most of this in a toggle || wire and then priority for 2nd line displayed
-  if (_inWireFailState) {     
-    timer.permanentPenalty(true);
-    communicate.badSwitch();
-    speaker.badSwitch();
-    keypad.setEnabled(false);
-
-    // clear 2nd line
-    display.update(false, FULL_EMPTY_LINE);
+  if (_inToggleFailState) {
+    display.update(true, "Incorrect Toggle");
+  } else if (_inWireFailState) {
     display.update(true, "Replace Red Wire");
   }
 
   // No penalties, back to normal
-  if (!_inToggleFailState) {
+  if (!_inToggleFailState && !_inWireFailState) {
     timer.permanentPenalty(false);
     display.update(true, DEFAULT_DISPLAY);
     display.resetCursorPosition(1, 0);
