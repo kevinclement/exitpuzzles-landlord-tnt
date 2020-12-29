@@ -10,6 +10,7 @@
 #include "myCommunicate.h"
 #include "myLightSensor.h"
 #include "myWires.h"
+#include "myLock.h"
 #include "myKeyShooter.h"
 
 class Conditions {
@@ -25,6 +26,7 @@ public:
   MyCommunicate communicate;
   MyLightSensor lightSensor;
   MyWires wires;
+  MyLock lock;
   MyKeyShooter keyShooter;
 
   void setup();

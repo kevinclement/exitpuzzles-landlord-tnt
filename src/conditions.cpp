@@ -6,6 +6,7 @@ Conditions::Conditions()
   : display(),
     timer(*this),
     wires(*this),
+    lock(*this),
     keypad(*this),
     speaker(),
     serial(*this),
@@ -31,6 +32,9 @@ void Conditions::setup() {
 
   // Setup the wires
   wires.setup();
+
+  // Setup the lock
+  lock.setup();
   
   // Setup the display (LCD)
   display.setup();
@@ -61,6 +65,9 @@ void Conditions::handle() {
 
   // handle the wires
   wires.handle();
+
+  // handle the lock
+  lock.handle();
 
   // handle the keypad
   keypad.handle();
@@ -241,11 +248,9 @@ void Conditions::wireStateChange() {
 void Conditions::toggleStateChange() {
   bool badToggleOn = (buttons.toggles[0] || buttons.toggles[3] ) && !_overrideToggle;
 
-  if (!_light) {
-    if (badToggleOn) {
-      Serial.println("Detected bad toggle but light is off.  Ignoring.");
-      badToggleOn = false;
-    }
+  if (!_light && badToggleOn) {
+    Serial.println("Detected bad toggle but light is off.  Ignoring.");
+    badToggleOn = false;
   }
 
   if (badToggleOn && !_inToggleFailState) {
@@ -255,11 +260,17 @@ void Conditions::toggleStateChange() {
     updateState();
   }
   else if (!badToggleOn && _inToggleFailState) {
-      Serial.print("Permanent penalty fixed - toggle: ");
-      Serial.println(badToggleOn);
-      _inToggleFailState = false;
+    Serial.print("Permanent penalty fixed - toggle: ");
+    Serial.println(badToggleOn);
+    _inToggleFailState = false;
+    updateState();      
+  }
 
-      updateState();      
+  // check for pass condition for toggles
+  // ↓  ↑  ↑  ↓  ↑ 
+  if (!buttons.toggles[0] && buttons.toggles[1] && buttons.toggles[2] && !buttons.toggles[3] && buttons.toggles[4]) {
+    Serial.println("Toggles Correct!");
+    lock.open = true;
   }
 }
 
@@ -329,6 +340,7 @@ void Conditions::teardown() {
   display.teardown();
   timer.teardown();
   wires.teardown();
+  lock.teardown();
   keypad.teardown();
   speaker.teardown();
   serial.teardown();
