@@ -23,9 +23,8 @@ public:
   
 private:
   bool _tickSoundEnabled = false; // should tick sound be enabled?
-  void beep(unsigned char speakerPin, int frequencyInHertz, long timeInMilliseconds);
+  void beep(int frequencyInHertz, long timeInMilliseconds);
   void uhoh();
-  void bonk();
 };
 
 #endif
