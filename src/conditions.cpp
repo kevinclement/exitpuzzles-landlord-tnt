@@ -181,67 +181,27 @@ void Conditions::penaltyMet() {
 }
 
 void Conditions::wireStateChange() {
-  // TODO: fix for wires only
-  bool badToggleOn = (buttons.toggles[0] || buttons.toggles[3] ) && !_overrideToggle;
-  bool badWireOn = !wires.badwire && !_overrideBadWire;
+  bool badWireOn = !wires.wires[3] && !_overrideBadWire;
 
-  if (!_light) {
-    if (badToggleOn) {
-      Serial.println("Detected bad toggle but light is off.  Ignoring.");
-      badToggleOn = false;
-    }
-
-    if (badWireOn) {
-      Serial.println("Detected bad wire but light is off.  Ignoring.");
-      badWireOn = false;
-    }
+  if (!_light && badWireOn) { 
+    Serial.println("Detected bad wire but light is off.  Ignoring.");
+    badWireOn = false;
   }
 
-  // shared bad state logic
-  if (badToggleOn || badWireOn) {
-    
-    Serial.print("Permanent penalty set - toggle: ");
-    Serial.print(badToggleOn);
-    Serial.print(" wire: ");
-    Serial.println(badWireOn);
-     
-    timer.permanentPenalty(true);
-    communicate.badSwitch();
-    speaker.badSwitch();
-    keypad.setEnabled(false);      
-
-    // clear 2nd line
-    display.update(false, FULL_EMPTY_LINE);
+  if (badWireOn && !_inWireFailState) {
+    Serial.print("Permanent penalty set - wire: 1");
+    _inWireFailState = true;
+    updateState();
+  }
+  else if (!badWireOn && _inWireFailState) {
+    Serial.print("Permanent penalty fixed - wire: 0");
+    _inWireFailState = false;
+    updateState();    
   }
 
-  if (badWireOn) {
-    display.update(true, "Replace Red Wire");
-  }
-  else if (badToggleOn) {
-    display.update(true, "Incorrect Toggle");
-    _inToggleFailState = true;
-  } else {
-    if (_inToggleFailState) {
-
-    }
-
-
-    // Everything is good, reset to keypad and password current
-    Serial.print("Permanent penalty fixed - toggle: ");
-    Serial.print(badToggleOn);
-    Serial.print(" wire: ");
-    Serial.println(badWireOn);
-    
-    timer.permanentPenalty(false);
-    display.update(true, DEFAULT_DISPLAY);
-    display.resetCursorPosition(1, 0);
-    display.update(false, keypad.getPassword());
-    keypad.setEnabled(true);
-
-    // check for all wires being turned on
-    if (wires.wire1 && wires.wire2 && wires.wire3) {
-      shootKey();
-    }
+  // check for all wires being turned on
+  if (!badWireOn && wires.wires[0] && wires.wires[1] && wires.wires[2]) {
+    shootKey();
   }
 }
 
@@ -286,6 +246,20 @@ void Conditions::updateState() {
     keypad.setEnabled(false);
     display.update(false, FULL_EMPTY_LINE);
     display.update(true, "Incorrect Toggle");
+  }
+
+  // TODO: should we check for !inToggleFailState here and give one a priority?
+  // that way we don't error twice
+  // or better yet, just put most of this in a toggle || wire and then priority for 2nd line displayed
+  if (_inWireFailState) {     
+    timer.permanentPenalty(true);
+    communicate.badSwitch();
+    speaker.badSwitch();
+    keypad.setEnabled(false);
+
+    // clear 2nd line
+    display.update(false, FULL_EMPTY_LINE);
+    display.update(true, "Replace Red Wire");
   }
 
   // No penalties, back to normal
@@ -366,7 +340,7 @@ void Conditions::printStatus() {
   Serial.print("  toggle2: ");
   Serial.println(buttons.toggles[1]);
   Serial.print("  wire: ");
-  Serial.println(!wires.badwire);
+  Serial.println(!wires.wires[3]);
   Serial.print("  key solved: ");
   Serial.println(_solvedKey);
   Serial.print("  all done: ");

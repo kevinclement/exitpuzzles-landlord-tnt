@@ -58,6 +58,7 @@ private:
   bool _light = false;
   bool _codeAfterWin = true;
   bool _inToggleFailState = false;
+  bool _inWireFailState = false;
   bool _overrideToggle;
   bool _overrideBadWire;
 

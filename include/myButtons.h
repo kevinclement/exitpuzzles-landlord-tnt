@@ -19,14 +19,14 @@ public:
   void teardown();
 
   // expose so condition can apply logic
-  bool toggles[5] = {false, false, false, false};
+  bool toggles[5] = {false, false, false, false, false};
   bool winBtn = false;
 
 private:
   Conditions &_conditions;
   bool enabled = true;
-  bool lastToggles[5] = {false, false, false, false};
-  bool curToggles[5] = {false, false, false, false};
+  bool lastToggles[5] = {false, false, false, false, false};
+  bool curToggles[5] = {false, false, false, false, false};
   bool winState  = false;
   bool lastWin   = false;
   int  initialWin  = true;

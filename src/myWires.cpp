@@ -10,75 +10,60 @@ MyWires::MyWires(Conditions &conditions)
 void MyWires::setup() {
   pinMode(WIRE1, INPUT_PULLUP);
   pinMode(WIRE2, INPUT_PULLUP);
-  pinMode(WIRE3,  INPUT_PULLUP); 
+  pinMode(WIRE3, INPUT_PULLUP); 
   pinMode(BADWIRE, INPUT_PULLUP); 
 }
 
-void MyWires::checkWire(int reading, int onBegVal, int onEndVal, int offVal, bool &wireOn) {
-  // TODO: FIX
-
-  // // wire on state
-  // if (reading >= onBegVal && reading < onEndVal && !wireOn) {
-  //   wireOn = true;
-  // }
-
-  // // wire off state
-  // if (reading >= offVal && wireOn) {
-  //   wireOn = false;
-  // }
+void MyWires::checkWire(int reading, int lower, int upper, bool &wireOn) {
+  // check if outside range and mark it off if it is
+  if (reading < lower || reading > upper) {
+    wireOn = false;
+  } else {
+    wireOn = true;
+  }
 }
 
-
 void MyWires::handle() {
-
-  //int wireReading = analogRead(BADWIRE);
-  //Serial.println(wireReading);
-  // Serial.print("wire2: ");
-  // Serial.print(analogRead(WIRE2));
-  // Serial.print(" wire3: ");
-  // Serial.print(analogRead(WIRE3));
-  // Serial.print(" bad: ");
-  // Serial.println(analogRead(BADWIRE));
   
-  checkWire(analogRead(WIRE1), 20,  40,  800, wire1);
-  checkWire(analogRead(WIRE2), 220, 350, 800, wire2);
-  checkWire(analogRead(WIRE3), 698, 705, 800, wire3);
-  checkWire(analogRead(BADWIRE), 20, 100, 800, badwire);
+  // Serial.print("wire1: ");
+  // Serial.println(analogRead(WIRE1));
 
-  if ((wire1 != lastWire1) || 
-      (wire2 != lastWire2) ||
-      (wire3 != lastWire3) || 
-      (badwire != lastBadwire)) {
+  // Wire Mappings:
+  //   1->4 : A0 (100k resistor - 742 avg reading)
+  //   B->D : A1 (4.7k resistor - 125 avg reading)
+  //   A->3 : A2 (10k resistor  - 228 avg reading)
+  //   C->2 : A3 (no resistor   -  15 avg reading)
+  checkWire(analogRead(WIRE1),  700, 850, curWires[0]);
+  checkWire(analogRead(WIRE2),   90, 250, curWires[1]);
+  checkWire(analogRead(WIRE3),  175, 315, curWires[2]);
+  checkWire(analogRead(BADWIRE),  0, 100, curWires[3]);
+  
+  if ((curWires[0] != lastWires[0]) || 
+      (curWires[1] != lastWires[1]) || 
+      (curWires[2] != lastWires[2]) || 
+      (curWires[3] != lastWires[3])) {
     lastDebounceTime = millis();
   }
 
   if ((millis() - lastDebounceTime) > debounceDelay) {
+    for (int i=0; i<4; i++) {
+      if (wires[i] != curWires[i]) {
+        wires[i] = curWires[i];
+        
+        // Serial.print("wire changed: ");
+        // Serial.print(i);
+        // Serial.print(" value: ");
+        // Serial.print(wires[i]);
+        // Serial.println();
 
-    if (wire1 != wire1State) {
-      _conditions.wireStateChange();      
-      wire1State = wire1;
-    }
-
-    if (wire2 != wire2State) {
-      _conditions.wireStateChange();      
-      wire2State = wire2;
-    }
-
-    if (wire3 != wire3State) {
-      _conditions.wireStateChange();      
-      wire3State = wire3;
-    }
-
-    if (badwire != badwireState) {
-      _conditions.wireStateChange();      
-      badwireState = badwire;
+        _conditions.wireStateChange();
+      }
     }
   }
 
-  lastWire1 = wire1;
-  lastWire2 = wire2;
-  lastWire3 = wire3;
-  lastBadwire = badwire;
+  for (int i=0; i<4; i++) {
+    lastWires[i] = curWires[i];
+  }
 }
 
 void MyWires::teardown() {
