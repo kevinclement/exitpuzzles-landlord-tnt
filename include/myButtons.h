@@ -26,10 +26,10 @@ private:
   Conditions &_conditions;
   bool enabled = true;
   bool lastToggles[5] = {false, false, false, false, false};
-  bool curToggles[5] = {false, false, false, false, false};
+  bool curToggles[5] =  {false, false, false, false, false};
   bool winState  = false;
   bool lastWin   = false;
-  int  initialWin  = true;
+  int  initialWin  = false;
   
   long lastDebounceTime = 0; 
   long debounceDelay = 100;
