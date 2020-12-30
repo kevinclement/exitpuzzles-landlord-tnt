@@ -11,7 +11,6 @@ Conditions::Conditions()
     speaker(),
     serial(*this),
     buttons(*this),
-    communicate(*this),
     lightSensor(*this),
     keyShooter(*this)
 {
@@ -41,9 +40,6 @@ void Conditions::setup() {
 
   // Setup the speaker
   speaker.setup();
-
-  // Setup the communication with slave
-  communicate.setup();
 
   // Setup the light sensor
   lightSensor.setup();
@@ -78,9 +74,6 @@ void Conditions::handle() {
   // handle any serial input
   serial.handle();
 
-  // handle any communication
-  communicate.handle();
-
   // handle any light sensing
   lightSensor.handle();
 
@@ -106,7 +99,6 @@ void Conditions::win() {
   // Trigger component wins
   timer.win();
   speaker.win();
-  communicate.win();
   display.blink();
 
   // Write to the serial so we know they won
@@ -145,7 +137,6 @@ void Conditions::lose() {
 
   // Component fails
   speaker.fail();
-  communicate.fail();
 
   // Cleanup
   teardown();
@@ -163,7 +154,6 @@ void Conditions::penalty(bool manualWirePenalty) {
     display.update(false,  keypad.getIncorrectCodeMessage());
   }
   timer.penalty();
-  communicate.penalty();
   speaker.penalty();
   
   keypad.setEnabled(false);
@@ -254,7 +244,6 @@ void Conditions::wireDoorStateChange()
 void Conditions::updateState() {
   if (_inToggleFailState || _inWireFailState) {
     timer.permanentPenalty(true);
-    communicate.badSwitch();
     speaker.badSwitch();
     keypad.setEnabled(false);
     display.update(false, FULL_EMPTY_LINE);
@@ -324,7 +313,6 @@ void Conditions::teardown() {
   speaker.teardown();
   serial.teardown();
   buttons.teardown();
-  communicate.teardown();
   lightSensor.teardown();
   keyShooter.teardown();
 }

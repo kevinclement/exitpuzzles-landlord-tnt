@@ -7,7 +7,6 @@
 #include "mySpeaker.h"
 #include "mySerial.h"
 #include "myButtons.h"
-#include "myCommunicate.h"
 #include "myLightSensor.h"
 #include "myWires.h"
 #include "myLock.h"
@@ -23,7 +22,6 @@ public:
   MySpeaker speaker;
   MySerial serial;
   MyButtons buttons;
-  MyCommunicate communicate;
   MyLightSensor lightSensor;
   MyWires wires;
   MyLock lock;
