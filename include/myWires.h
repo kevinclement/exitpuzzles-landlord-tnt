@@ -19,7 +19,6 @@ public:
   void setup();
   void handle();
   void teardown();
-  bool enabled = false;
 
   // exposed state so condition can use it properly
   bool wires[4] = { false, false, false, true };  // start out assuming wire 4 is plugged in

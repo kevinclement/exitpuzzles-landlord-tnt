@@ -200,7 +200,12 @@ void Conditions::wireStateChange() {
   }
 
   // check for all wires being turned on
-  if (!badWireOn && wires.wires[0] && wires.wires[1] && wires.wires[2]) {
+  // no bad wires, and they have opened the example wire door
+  if (!badWireOn && 
+      _exampleDoorOpened && 
+      wires.wires[0] && 
+      wires.wires[1] &&
+      wires.wires[2]) {
     shootKey();
   }
 }
@@ -237,12 +242,12 @@ void Conditions::toggleStateChange() {
 
 void Conditions::wireDoorStateChange() 
 {
-  if (buttons.wireDoor && !wires.enabled) {
+  if (buttons.wireDoor && !_exampleDoorOpened) {
     Serial.println("Example wire door OPENED.");
 
     // this is latched, don't ever switch it back to false
     // until the device is reset
-    wires.enabled = true;
+    _exampleDoorOpened = true;
   }
 }
 

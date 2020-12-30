@@ -60,6 +60,7 @@ private:
   bool _codeAfterWin = true;
   bool _inToggleFailState = false;
   bool _inWireFailState = false;
+  bool _exampleDoorOpened = false;
   bool _overrideToggle;
   bool _overrideBadWire;
 
