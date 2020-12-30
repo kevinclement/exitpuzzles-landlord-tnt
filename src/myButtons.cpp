@@ -13,6 +13,7 @@ void MyButtons::setup() {
   pinMode(TOGGLE_BUTTON4, INPUT_PULLUP);
   pinMode(TOGGLE_BUTTON5, INPUT_PULLUP);
   pinMode(WINBTN, INPUT_PULLUP); 
+  pinMode(WIRE_DOOR, INPUT_PULLUP);
 }
 
 // Main loop function
@@ -29,12 +30,15 @@ void MyButtons::handle() {
   checkButton(!digitalRead(TOGGLE_BUTTON5), curToggles[4]);
 
   checkButton(digitalRead(WINBTN), winBtn);
+  
+  checkButton(!digitalRead(WIRE_DOOR), curWireDoor);
 
   if ((curToggles[0] != lastToggles[0]) || 
       (curToggles[1] != lastToggles[1]) || 
       (curToggles[2] != lastToggles[2]) || 
       (curToggles[3] != lastToggles[3]) || 
       (curToggles[4] != lastToggles[4]) || 
+      (curWireDoor != lastWireDoor) || 
       (winBtn != lastWin)) {
     lastDebounceTime = millis();
   }
@@ -48,6 +52,13 @@ void MyButtons::handle() {
         toggles[i] = curToggles[i];
         _conditions.toggleStateChange();
       }
+    }
+
+    // Check for door change
+    if (wireDoor != curWireDoor) {
+      wireDoor =  curWireDoor;
+
+      // TODO: call to conditions?
     }
 
     // Check win condition
@@ -69,6 +80,7 @@ void MyButtons::handle() {
   }
 
   lastWin = winBtn;
+  lastWireDoor = curWireDoor;
 }
 
 void MyButtons::teardown() {
