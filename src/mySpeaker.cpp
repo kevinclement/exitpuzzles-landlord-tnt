@@ -1,5 +1,4 @@
 #include "Arduino.h"
-#include "pitches.h"
 #include "mySpeaker.h"
 
 MySpeaker::MySpeaker()
