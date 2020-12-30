@@ -29,7 +29,7 @@ void MyButtons::handle() {
   checkButton(!digitalRead(TOGGLE_BUTTON4), curToggles[3]);
   checkButton(!digitalRead(TOGGLE_BUTTON5), curToggles[4]);
 
-  checkButton(digitalRead(WINBTN), winBtn);
+  checkButton(digitalRead(WINBTN), curWin);
   
   checkButton(!digitalRead(WIRE_DOOR), curWireDoor);
 
@@ -39,7 +39,7 @@ void MyButtons::handle() {
       (curToggles[3] != lastToggles[3]) || 
       (curToggles[4] != lastToggles[4]) || 
       (curWireDoor != lastWireDoor) || 
-      (winBtn != lastWin)) {
+      (curWin != lastWin)) {
     lastDebounceTime = millis();
   }
   
@@ -61,9 +61,9 @@ void MyButtons::handle() {
     }
 
     // Check win condition
-    if (winBtn != winState && !_conditions._overrideWinButton) {
-      winState = winBtn;
-      if (winState) {
+    if (winBtn != curWin && !_conditions._overrideWinButton) {
+      winBtn = curWin;
+      if (winBtn) {
         if (initialWin) {
           initialWin = false;
         }
@@ -74,11 +74,13 @@ void MyButtons::handle() {
     }
   }
 
+  // store toggles last state
   for (int i=0; i<5; i++) {
     lastToggles[i] = curToggles[i];
   }
 
-  lastWin = winBtn;
+  // store buttons last state
+  lastWin = curWin;
   lastWireDoor = curWireDoor;
 }
 

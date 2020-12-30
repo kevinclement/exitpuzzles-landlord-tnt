@@ -22,7 +22,7 @@ public:
   void handle();
   void teardown();
 
-  // expose so condition can apply logic
+  // expose so conditions can apply logic
   bool toggles[5] = {false, false, false, false, false};
   bool winBtn = false;
   bool wireDoor = false;
@@ -32,15 +32,14 @@ private:
   bool enabled = true;
   bool lastToggles[5] = {false, false, false, false, false};
   bool curToggles[5] =  {false, false, false, false, false};
-  
-  bool winState  = false;
-  bool lastWin   = false;
-  
+    
+  bool curWin = false;
+  bool lastWin = false;
+  int  initialWin  = true;
+
   bool curWireDoor = false;
   bool lastWireDoor = false;
 
-  int  initialWin  = true;
-  
   long lastDebounceTime = 0; 
   long debounceDelay = 100;
 
