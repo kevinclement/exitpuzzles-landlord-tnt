@@ -59,8 +59,7 @@ void MySpeaker::toggleTickEnabled() {
 }
 
 void MySpeaker::tickEnabled() {
-  // TODO: Add back, don't want to listen to it right now
-  //_tickSoundEnabled = true;
+  _tickSoundEnabled = true;
 }
 
 void MySpeaker::win() {

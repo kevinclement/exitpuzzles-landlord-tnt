@@ -189,12 +189,12 @@ void Conditions::wireStateChange() {
   }
 
   if (badWireOn && !_inWireFailState) {
-    Serial.print("Permanent penalty set - wire: 1");
+    Serial.println("Permanent penalty set - wire: 1");
     _inWireFailState = true;
     updateState();
   }
   else if (!badWireOn && _inWireFailState) {
-    Serial.print("Permanent penalty fixed - wire: 0");
+    Serial.println("Permanent penalty fixed - wire: 0");
     _inWireFailState = false;
     updateState();    
   }
