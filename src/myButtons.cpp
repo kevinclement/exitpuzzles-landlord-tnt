@@ -57,8 +57,7 @@ void MyButtons::handle() {
     // Check for door change
     if (wireDoor != curWireDoor) {
       wireDoor =  curWireDoor;
-
-      // TODO: call to conditions?
+      _conditions.wireDoorStateChange();
     }
 
     // Check win condition

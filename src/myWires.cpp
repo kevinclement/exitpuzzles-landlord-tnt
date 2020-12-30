@@ -25,6 +25,10 @@ void MyWires::checkWire(int reading, int lower, int upper, bool &wireOn) {
 
 void MyWires::handle() {
   
+  if (!enabled) {
+    return;
+  }
+
   // Serial.print("wire1: ");
   // Serial.println(analogRead(WIRE1));
 

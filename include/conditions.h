@@ -51,6 +51,7 @@ public:
 
   void wireStateChange();
   void toggleStateChange();
+  void wireDoorStateChange();
     
 private:
   bool _finished;

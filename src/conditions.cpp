@@ -235,6 +235,17 @@ void Conditions::toggleStateChange() {
   }
 }
 
+void Conditions::wireDoorStateChange() 
+{
+  if (buttons.wireDoor && !wires.enabled) {
+    Serial.println("Example wire door OPENED.");
+
+    // this is latched, don't ever switch it back to false
+    // until the device is reset
+    wires.enabled = true;
+  }
+}
+
 void Conditions::updateState() {
   if (_inToggleFailState || _inWireFailState) {
     timer.permanentPenalty(true);
