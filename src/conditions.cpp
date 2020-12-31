@@ -84,6 +84,7 @@ void Conditions::handle() {
 
 // They win!
 void Conditions::win() {
+  _solved = true;
 
   // Update display
   display.clear();
@@ -397,6 +398,8 @@ void Conditions::printStatus() {
 
   Serial.print(",finished:");
   Serial.print(_finished ? "true" : "false");
+  Serial.print(",solved:");
+  Serial.print(_solved ? "true" : "false");
 
   Serial.println();
 }

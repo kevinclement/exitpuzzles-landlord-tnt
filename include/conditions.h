@@ -51,6 +51,7 @@ public:
     
 private:
   bool _finished;
+  bool _solved = false;
   bool _solvedKey;
   bool _light = false;
   bool _codeAfterWin = true;
