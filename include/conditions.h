@@ -37,7 +37,6 @@ public:
   void handle();
   void printHelp();
   void printStatus();
-  void printTime();
   void shootKey();
   void overrideWinButton();
   void overrideToggle();

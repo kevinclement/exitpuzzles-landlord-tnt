@@ -177,7 +177,7 @@ void MyTimer::setDisplay(int hours, int minutes, int seconds, int milliseconds, 
 
   // write out the time every 2 minutes, do it on the 10s mark to give me time to respond in the pi
   if (((hours > 0) || (minutes > 0)) && minutes % 1 == 0 && seconds == 10 && milliseconds == 99) {
-    _conditions.printTime();
+    _conditions.printStatus();
   }
 
   // pull out the individual numbers for the display

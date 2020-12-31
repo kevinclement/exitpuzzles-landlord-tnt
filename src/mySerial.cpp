@@ -57,7 +57,7 @@ void MySerial::handle() {
       _conditions.timer.setTimeLeft(hours, minutes, seconds);
     }
     else if (str == "time") {
-      _conditions.printTime();
+      _conditions.printStatus();
     }
     else if (str == "key") {
       Serial.println("Overriding key shooter, shooting now.");

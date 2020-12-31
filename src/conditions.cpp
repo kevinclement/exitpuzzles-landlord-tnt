@@ -400,11 +400,6 @@ void Conditions::printStatus() {
   Serial.println();
 }
 
-void Conditions::printTime() {
-  Serial.print("current time: ");
-  Serial.println(timer.getTimeLeft());
-}
-
 void Conditions::lightSensed() {
   _light = true;
   Serial.println("Detected light. Turning on sound.");
