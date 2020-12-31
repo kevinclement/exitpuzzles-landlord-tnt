@@ -24,7 +24,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.  */
 
 #include <avr/wdt.h>
 
-#define soft_restart()        \
+#define soft_restart()      \
 do                          \
 {                           \
     wdt_enable(WDTO_15MS);  \
