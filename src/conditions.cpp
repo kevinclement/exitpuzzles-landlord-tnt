@@ -323,6 +323,8 @@ void Conditions::printHelp() {
 
   // Serial class stores all the commands so print its help
   serial.printHelp();
+
+  printStatus();
 }
 
 void Conditions::printStatus() {
