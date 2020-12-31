@@ -1,6 +1,7 @@
 #include "Arduino.h"
 #include "conditions.h"
 #include "consts.h"
+#include "version.h"
 
 Conditions::Conditions() 
   : display(),
@@ -294,8 +295,6 @@ void Conditions::shootKey() {
     speaker.shootKey();
     _solvedKey = true;
   }
-
-  // TODO: turn off wire logic once we've solved it?
 }
 
 // When the game is over turn everything off
@@ -320,23 +319,83 @@ void Conditions::teardown() {
 // Print help with the system first starts up
 void Conditions::printHelp() {
   Serial.println("Ultimate Bomb Simulation by kevinc.");
+  Serial.println(getFullVersion("landlord-tnt"));
 
   // Serial class stores all the commands so print its help
   serial.printHelp();
 }
 
 void Conditions::printStatus() {
-  Serial.println("Status: ");
-  Serial.print("  toggle1: ");
-  Serial.println(buttons.toggles[0]);
-  Serial.print("  toggle2: ");
-  Serial.println(buttons.toggles[1]);
-  Serial.print("  wire: ");
-  Serial.println(!wires.wires[3]);
-  Serial.print("  key solved: ");
-  Serial.println(_solvedKey);
-  Serial.print("  all done: ");
-  Serial.println(_finished);
+  // Old Status Code:
+  // Serial.println("Status: ");
+  // Serial.print("  toggle1: ");
+  // Serial.println(buttons.toggles[0]);
+  // Serial.print("  toggle2: ");
+  // Serial.println(buttons.toggles[1]);
+  // Serial.print("  wire: ");
+  // Serial.println(!wires.wires[3]);
+  // Serial.print("  key solved: ");
+  // Serial.println(_solvedKey);
+  // Serial.print("  all done: ");
+  // Serial.println(_finished);
+
+  Serial.print("status=");
+  
+  Serial.print("version:");
+  Serial.print(GIT_HASH);
+  Serial.print(",gitDate:");
+  Serial.print(GIT_DATE);
+  Serial.print(",buildDate:");
+  Serial.print(DATE_NOW);
+
+  // TODO: should I just send all 3 parts here?
+  Serial.print(",time:");
+  Serial.print(timer.getTimeLeft());
+
+  Serial.print(",toggle1:");
+  Serial.print(buttons.toggles[0] ? "true" : "false");
+  Serial.print(",toggle2:");
+  Serial.print(buttons.toggles[1] ? "true" : "false");
+  Serial.print(",toggle3:");
+  Serial.print(buttons.toggles[2] ? "true" : "false");
+  Serial.print(",toggle4:");
+  Serial.print(buttons.toggles[3] ? "true" : "false");
+  Serial.print(",toggle5:");
+  Serial.print(buttons.toggles[4] ? "true" : "false");
+  Serial.print(",togglesFailing:");
+  Serial.print(_inToggleFailState ? "true" : "false");
+  Serial.print(",overrideToggles:");
+  Serial.print(_overrideToggle ? "true" : "false");
+
+  Serial.print(",wire1:");
+  Serial.print(wires.wires[0] ? "true" : "false");
+  Serial.print(",wire2:");
+  Serial.print(wires.wires[1] ? "true" : "false");
+  Serial.print(",wire3:");
+  Serial.print(wires.wires[2] ? "true" : "false");
+  Serial.print(",wire4:");
+  Serial.print(wires.wires[3] ? "true" : "false");
+  Serial.print(",wiresFailing:");
+  Serial.print(_inWireFailState ? "true" : "false");
+  Serial.print(",overrideBadWire:");
+  Serial.print(_overrideBadWire ? "true" : "false");
+
+  Serial.print(",light:");
+  Serial.print(_light ? "true" : "false");
+  Serial.print(",exampleDoor:");
+  Serial.print(_exampleDoorOpened ? "true" : "false");
+  Serial.print(",key:");
+  Serial.print(_solvedKey ? "true" : "false");
+  Serial.print(",password:");
+  Serial.print(keypad.getPassword());
+
+  Serial.print(",overrideWinButton:");
+  Serial.print(_overrideWinButton ? "true" : "false");
+
+  Serial.print(",solved:");
+  Serial.print(_finished ? "true" : "false");
+
+  Serial.println();
 }
 
 void Conditions::printTime() {
