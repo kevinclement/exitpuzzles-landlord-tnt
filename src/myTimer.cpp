@@ -51,15 +51,19 @@ void MyTimer::handle() {
       if (hours == 0 && minutes == 10 && seconds == 0 && !warningPrinted[0]) {
         warningPrinted[0] = true;
         Serial.println("Warning: 10 minutes remaining.");
+        _conditions.printStatus();
       } else if (hours == 0 && minutes == 5 && seconds == 0 && !warningPrinted[1]) {
         warningPrinted[1] = true;
         Serial.println("Warning: 5 minutes remaining.");
+        _conditions.printStatus();
       } else if (hours == 0 && minutes == 3 && seconds == 0 && !warningPrinted[2]) {
         warningPrinted[2] = true;
         Serial.println("Warning: 3 minutes remaining.");
+        _conditions.printStatus();
       } else if (hours == 0 && minutes == 1 && seconds == 0 && !warningPrinted[3]) {
         warningPrinted[3] = true;
         Serial.println("Warning: 1 minutes remaining.");
+        _conditions.printStatus();
       } 
 
       // Countdown is Finished? Sound Alarm

@@ -108,6 +108,8 @@ void Conditions::win() {
   Serial.print(timer.getTimeLeft());
   Serial.print(" Password: ");
   Serial.println(keypad.getPassword());
+
+  printStatus();
   
   // cleanup
   teardown();
@@ -123,6 +125,9 @@ void Conditions::tryCode() {
 
     Serial.print("Invalid password tried: ");
     Serial.println(keypad.getPassword());
+
+    // TODO: can remove this if I update for every character press
+    printStatus();
   }
 }
 
@@ -130,6 +135,7 @@ void Conditions::tryCode() {
 void Conditions::lose() {
   
   Serial.println("BOOM!!!");
+  printStatus();
 
   // Update display
   display.clear();
@@ -141,9 +147,6 @@ void Conditions::lose() {
 
   // Cleanup
   teardown();
-
-  // TODO: need to test if this needs to be moved up at all
-  printStatus();
 }
 
 // Handles penalty, will be a limited speed up
@@ -303,6 +306,7 @@ void Conditions::shootKey() {
     keyShooter.shoot();
     speaker.shootKey();
     _solvedKey = true;
+    printStatus();
   }
 }
 
