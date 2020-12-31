@@ -328,19 +328,6 @@ void Conditions::printHelp() {
 }
 
 void Conditions::printStatus() {
-  // Old Status Code:
-  // Serial.println("Status: ");
-  // Serial.print("  toggle1: ");
-  // Serial.println(buttons.toggles[0]);
-  // Serial.print("  toggle2: ");
-  // Serial.println(buttons.toggles[1]);
-  // Serial.print("  wire: ");
-  // Serial.println(!wires.wires[3]);
-  // Serial.print("  key solved: ");
-  // Serial.println(_solvedKey);
-  // Serial.print("  all done: ");
-  // Serial.println(_finished);
-
   Serial.print("status=");
   
   Serial.print("version:");
@@ -404,6 +391,7 @@ void Conditions::lightSensed() {
   _light = true;
   Serial.println("Detected light. Turning on sound.");
   speaker.tickEnabled();
+  printStatus();
 }
 
 void Conditions::disableCodeAfterWin() {
