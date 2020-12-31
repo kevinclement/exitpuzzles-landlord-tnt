@@ -108,11 +108,11 @@ void Conditions::win() {
   Serial.print(timer.getTimeLeft());
   Serial.print(" Password: ");
   Serial.println(keypad.getPassword());
-
-  printStatus();
   
   // cleanup
   teardown();
+
+  printStatus();
 }
 
 // Try the current code on the keypad to see if its the correct one
@@ -135,7 +135,6 @@ void Conditions::tryCode() {
 void Conditions::lose() {
   
   Serial.println("BOOM!!!");
-  printStatus();
 
   // Update display
   display.clear();
@@ -147,6 +146,8 @@ void Conditions::lose() {
 
   // Cleanup
   teardown();
+
+  printStatus();
 }
 
 // Handles penalty, will be a limited speed up
@@ -394,7 +395,7 @@ void Conditions::printStatus() {
   Serial.print(",overrideWinButton:");
   Serial.print(_overrideWinButton ? "true" : "false");
 
-  Serial.print(",solved:");
+  Serial.print(",finished:");
   Serial.print(_finished ? "true" : "false");
 
   Serial.println();

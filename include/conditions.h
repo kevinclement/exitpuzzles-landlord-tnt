@@ -43,7 +43,6 @@ public:
   void overrideBadWire();
   void disableCodeAfterWin();
   void forceWin();
-  bool hasFinished() const { return _finished; }
   bool _overrideWinButton;
 
   void wireStateChange();
