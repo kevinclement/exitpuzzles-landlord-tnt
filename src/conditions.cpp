@@ -141,6 +141,9 @@ void Conditions::lose() {
 
   // Cleanup
   teardown();
+
+  // TODO: need to test if this needs to be moved up at all
+  printStatus();
 }
 
 // Handles penalty, will be a limited speed up
@@ -199,6 +202,8 @@ void Conditions::wireStateChange() {
       wires.wires[2]) {
     shootKey();
   }
+
+  printStatus();
 }
 
 void Conditions::toggleStateChange() {
@@ -229,6 +234,8 @@ void Conditions::toggleStateChange() {
     speaker.openLock();
     lock.open = true;
   }
+
+  printStatus();
 }
 
 void Conditions::wireDoorStateChange() 
@@ -239,6 +246,8 @@ void Conditions::wireDoorStateChange()
     // this is latched, don't ever switch it back to false
     // until the device is reset
     _exampleDoorOpened = true;
+
+    printStatus();
   }
 }
 
