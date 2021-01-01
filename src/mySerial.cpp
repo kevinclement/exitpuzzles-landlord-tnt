@@ -55,6 +55,9 @@ void MySerial::handle() {
       Serial.println(seconds);
 
       _conditions.timer.setTimeLeft(hours, minutes, seconds);
+      
+      // refresh status to show new time
+      _conditions.printStatus(); 
     }
     else if (str == "time") {
       _conditions.printStatus();
