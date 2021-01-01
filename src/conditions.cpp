@@ -188,12 +188,12 @@ void Conditions::wireStateChange() {
   }
 
   if (badWireOn && !_inWireFailState) {
-    Serial.println("Permanent penalty set - wire: 1");
+    Serial.println("Permanent penalty: missing red wire");
     _inWireFailState = true;
     updateState();
   }
   else if (!badWireOn && _inWireFailState) {
-    Serial.println("Permanent penalty fixed - wire: 0");
+    Serial.println("Permanent penalty fixed: red wire");
     _inWireFailState = false;
     updateState();    
   }
@@ -220,14 +220,12 @@ void Conditions::toggleStateChange() {
   }
 
   if (badToggleOn && !_inToggleFailState) {
-    Serial.print("Permanent penalty set - toggle: ");
-    Serial.println(badToggleOn);
+    Serial.println("Permanent penalty: bad toggles");
     _inToggleFailState = true;
     updateState();
   }
   else if (!badToggleOn && _inToggleFailState) {
-    Serial.print("Permanent penalty fixed - toggle: ");
-    Serial.println(badToggleOn);
+    Serial.println("Permanent penalty fixed: toggles good");
     _inToggleFailState = false;
     updateState();      
   }
