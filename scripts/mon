@@ -1,2 +1,2 @@
 #!/bin/sh
-pio device monitor --echo --quiet -b 9600 -p /dev/ttyTNT -f colorize -f send_on_enter -f time
+pio device monitor --echo --quiet -b 115200 -p /dev/ttyTNT -f colorize -f send_on_enter -f time

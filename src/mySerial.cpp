@@ -8,7 +8,7 @@ MySerial::MySerial(Conditions &conditions)
 }
 
 void MySerial::setup() {
-  Serial.begin(9600);
+  Serial.begin(115200);
   
   // set read timeout to something really low so we don't hang the 'tick'
   Serial.setTimeout(10);
