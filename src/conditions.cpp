@@ -201,7 +201,7 @@ void Conditions::wireStateChange() {
   // check for all wires being turned on
   // no bad wires, and they have opened the example wire door
   if (!badWireOn && 
-      _exampleDoorOpened && 
+      (_exampleDoorOpened || _overrideDoorAjar) && 
       wires.wires[0] && 
       wires.wires[1] &&
       wires.wires[2]) {
@@ -292,6 +292,14 @@ void Conditions::overrideBadWire() {
 void Conditions::overrideWinButton() {
   _overrideWinButton = !_overrideWinButton;
   printStatus();
+}
+void Conditions::overrideDoorAjar(bool enable) {
+  _overrideDoorAjar = enable;
+  
+  // need to print status to reflect it, however
+  // there is a case where you did this override to 'solve' the state of the wires
+  // so we should just trigger a wire state change, and that will in-turn update the status
+  wireStateChange();
 }
 
 void Conditions::forceWin() {
@@ -384,6 +392,8 @@ void Conditions::printStatus() {
   Serial.print(_light ? "true" : "false");
   Serial.print(",exampleDoor:");
   Serial.print(_exampleDoorOpened ? "true" : "false");
+  Serial.print(",overrideDoorAjar:");
+  Serial.print(_overrideDoorAjar ? "true" : "false");
   Serial.print(",key:");
   Serial.print(_solvedKey ? "true" : "false");
   Serial.print(",password:");

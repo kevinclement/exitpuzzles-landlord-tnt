@@ -80,6 +80,20 @@ void MySerial::handle() {
       Serial.println("Turning off win button.");
       _conditions.overrideWinButton();
     }
+    else if (command == "doorajar") {
+      if (value == "0") {
+        Serial.println("Turning off door ajar sensor.");
+        // this sets the override to true, feels a little backwards here
+        // but makes sense elsewhere
+        _conditions.overrideDoorAjar(true);
+      } 
+      else if (value == "1") {
+        Serial.println("Turning on door ajar sensor.");
+        _conditions.overrideDoorAjar(false);
+      } else {
+        Serial.println("Unknown set value for door ajar.");
+      }
+    }
     else if (command == "stop") {
       Serial.println("Turning off toggle penalty.");
       _conditions.overrideToggle();

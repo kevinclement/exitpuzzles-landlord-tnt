@@ -41,6 +41,7 @@ public:
   void overrideWinButton();
   void overrideToggle();
   void overrideBadWire();
+  void overrideDoorAjar(bool enable);
   void disableCodeAfterWin();
   void forceWin();
   bool _overrideWinButton;
@@ -58,6 +59,7 @@ private:
   bool _inToggleFailState = false;
   bool _inWireFailState = false;
   bool _exampleDoorOpened = false;
+  bool _overrideDoorAjar = false;
   bool _overrideToggle;
   bool _overrideBadWire;
 
