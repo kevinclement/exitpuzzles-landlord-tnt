@@ -26,27 +26,29 @@ void MySerial::handle() {
   
   // check if we need to read from serial
   if (Serial.available()) {
-    String str = Serial.readStringUntil(' ');
+    String msg = Serial.readStringUntil('\n');
 
-    if (str == "reset") {
+    String command = msg;
+    String value;
+
+    // check if we need to split on space for advance commands
+    for (int i = 0; i <= msg.length(); i++) {
+      if (msg.charAt(i) == ' ') {
+        command = msg.substring(0, i);
+        value = msg.substring(i+1, msg.length());
+      }
+    }
+
+    if (command == "reset") {
       Serial.println("reset entered");
       soft_restart();
     } 
-    else if (str == "set") {
+    else if (command == "set") {
       // expecting format 's hh:mm:ss'
-        
-      // read the hours (space before)
-      //Serial.read();
-      hours = Serial.parseInt();
+      String hours = value.substring(0, 2);
+      String minutes = value.substring(3, 5);
+      String seconds = value.substring(6, 8);
 
-      // read the minutes (colon before)
-      Serial.read();
-      minutes=Serial.parseInt();
-
-      // read the seconds
-      Serial.read();
-      seconds=Serial.parseInt();
-        
       Serial.print("setting time to ");
       Serial.print(hours);
       Serial.print(":");
@@ -54,46 +56,50 @@ void MySerial::handle() {
       Serial.print(":");
       Serial.println(seconds);
 
-      _conditions.timer.setTimeLeft(hours, minutes, seconds);
+      _conditions.timer.setTimeLeft(hours.toInt(), minutes.toInt(), seconds.toInt());
       
       // refresh status to show new time
       _conditions.printStatus(); 
     }
-    else if (str == "time") {
+    else if (command == "time") {
       _conditions.printStatus();
     }
-    else if (str == "key") {
+    else if (command == "key") {
       Serial.println("Overriding key shooter, shooting now.");
       _conditions.shootKey();
     }
-    else if (str == "wires") {
+    else if (command == "wires") {
       Serial.println("Showing error that wires are incorrect.");
       _conditions.penalty(true);
     }
-    else if (str == "stopwire") {
+    else if (command == "stopwire") {
       Serial.println("Turning off bad wire penalty.");
       _conditions.overrideBadWire();
     }
-    else if (str == "stopwin") {
+    else if (command == "stopwin") {
       Serial.println("Turning off win button.");
       _conditions.overrideWinButton();
     }
-    else if (str == "stop") {
+    else if (command == "stop") {
       Serial.println("Turning off toggle penalty.");
       _conditions.overrideToggle();
     }
-    else if (str == "status") {
+    else if (command == "status") {
       _conditions.printStatus();
     }
-    else if (str == "code") {
+    else if (command == "code") {
       _conditions.disableCodeAfterWin();
     }
-    else if (str == "win") {
+    else if (command == "win") {
       Serial.println("Forcing a win.");
       _conditions.forceWin();
     }
-    else if (str == "blink") {
+    else if (command == "blink") {
       _conditions.display.blink();
+    } else {
+      Serial.print("unknown command: '");
+      Serial.print(command);
+      Serial.println("'");
     }
   }
 }
