@@ -291,9 +291,7 @@ void Conditions::overrideBadWire() {
 
 void Conditions::overrideWinButton() {
   _overrideWinButton = !_overrideWinButton;
-
-  // TODO: fix this?? need to call both?
-  //stateChange();
+  printStatus();
 }
 
 void Conditions::forceWin() {
