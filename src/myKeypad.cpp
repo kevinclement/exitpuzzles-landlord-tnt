@@ -64,6 +64,7 @@ void MyKeyPad::handle() {
     _display.resetCursorPosition(1, 0);
 
     _curPassword = "";
+    _conditions.printStatus();
     return;
   }
 
@@ -82,6 +83,8 @@ void MyKeyPad::handle() {
   if (_curPassword.length() == _passwordLimit) {
     _display.resetCursorPosition(1, _passwordLimit - 1);
   }
+
+  _conditions.printStatus();
 }
 
 void MyKeyPad::setEnabled(bool newEnabled) {
