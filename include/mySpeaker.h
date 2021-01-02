@@ -11,6 +11,7 @@ public:
 
   void setup();
   void buzz(int freq, int del, int del2);
+  void beep(int frequencyInHertz, long timeInMilliseconds);
   void tick();
   void toggleTickEnabled();
   void tickEnabled();
@@ -24,7 +25,6 @@ public:
   
 private:
   bool _tickSoundEnabled = false; // should tick sound be enabled?
-  void beep(int frequencyInHertz, long timeInMilliseconds);
   void uhoh();
 };
 

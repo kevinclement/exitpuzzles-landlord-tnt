@@ -60,9 +60,13 @@ void MyKeyPad::handle() {
     // EASTER EGG
     // if the code is 311311 and they press *, then
     // reset the device.  Allows for a reset without the need to fiddle with website
-    if (_curPassword == '311311') {
+    Serial.println(_curPassword);
+    if (_curPassword == "311311") {
       _conditions.reset();
     }
+
+    // special freq for clear
+    _conditions.speaker.beep(400, 70);
     
     // Clear the LCD
     _display.resetCursorPosition(1, 0);
@@ -73,6 +77,9 @@ void MyKeyPad::handle() {
     _conditions.printStatus();
     return;
   }
+
+  // audio feedback - randomize the freq a bit to add flavor
+  _conditions.speaker.beep(350 + random(100, 400), 30);
 
   // print key on lcd
   _display.updateChar(key);
