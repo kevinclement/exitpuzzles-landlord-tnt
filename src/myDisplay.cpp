@@ -16,6 +16,10 @@ void MyDisplay::setup() {
   _lcd.print(DEFAULT_DISPLAY);
   _lcd.setCursor(0, 1);
   _lcd.cursor_on();
+
+  // start out with display off
+  // when light is detected it will turn on
+  off();
 }
 
 void MyDisplay::handle() {
@@ -48,6 +52,16 @@ void MyDisplay::update(bool line1, String text) {
 // Single character print
 void MyDisplay::updateChar(char aChar) {
   _lcd.print(aChar);
+}
+
+void MyDisplay::off() {
+  _lcd.noDisplay();
+  _lcd.noBacklight();
+}
+
+void MyDisplay::on() {
+  _lcd.display();
+  _lcd.backlight();
 }
 
 // Clear the whole display, both lines.  

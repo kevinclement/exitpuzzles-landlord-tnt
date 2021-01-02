@@ -31,6 +31,8 @@ public:
   void permanentPenalty(bool on);
   void blink();
   void teardown();
+  void off();
+  void on();
   String getTimeLeft();
   void setTimeLeft(int h, int m, int s);
 

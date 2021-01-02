@@ -12,6 +12,8 @@ public:
   void update(bool line1, String text);
   void updateChar(char aChar);
   void clear();
+  void off();
+  void on();
   void resetCursorPosition(byte row, byte column);
   void teardown();
   void blink();

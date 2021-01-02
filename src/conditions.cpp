@@ -419,8 +419,15 @@ void Conditions::printStatus() {
 
 void Conditions::lightSensed() {
   _light = true;
-  Serial.println("Detected light. Turning on sound.");
+  Serial.println("Detected light. Turning on sound and displays");
   speaker.tickEnabled();
+  
+  // By default since these devices are running all the time I turn them
+  // off when the system starts, then when light is detected turn them on
+  // that way, when he leaves for the day, he can just reset the device and it sleep it
+  timer.on();
+  display.on();
+
   printStatus();
 }
 
