@@ -7,17 +7,21 @@ class Conditions;
 #define RELAY_ON   0
 #define RELAY_OFF  1
 
+// how long before we time out the solenoid
+#define LOCK_SOL_TIMEOUT_MS 60000
+
 class MyLock {
 public:
   MyLock(Conditions &conditions);
   void setup();
   void handle();
   void teardown();
-
-  bool open = false;
+  void open();
 
 private:
   Conditions &_conditions;
+  long _poweredOnTime = 0;
+  bool _open = false;
 };
 
 #endif

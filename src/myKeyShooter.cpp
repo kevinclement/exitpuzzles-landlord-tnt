@@ -14,7 +14,7 @@ void MyKeyShooter::setup() {
 void MyKeyShooter::handle() {
 
   // if we've shot the key and it's been more than timeout, turn off sol since it gets hot
-  if (solOn && enabled && (millis() - turnedOn) > timeoutTime) {
+  if (solOn && enabled && (millis() - turnedOn) > KEY_SOL_TIMEOUT_MS) {
     Serial.println("Key is out, turning off solenoid to reduce heat.");
     enabled = false;
   }

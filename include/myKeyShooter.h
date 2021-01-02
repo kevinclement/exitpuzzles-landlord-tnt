@@ -8,6 +8,9 @@ class Conditions;
 #define RELAY_ON    0
 #define RELAY_OFF   1
 
+// how long before we time out the solenoid
+#define KEY_SOL_TIMEOUT_MS 45000
+
 class MyKeyShooter {
 public:
   MyKeyShooter(Conditions &conditions);
@@ -22,7 +25,6 @@ private:
   bool enabled = true;
   bool solOn = false;
   long turnedOn = 0;
-  long timeoutTime = 45000; // turn off after 45 seconds
 };
 
 #endif
