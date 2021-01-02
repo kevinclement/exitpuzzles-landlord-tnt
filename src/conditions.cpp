@@ -231,12 +231,14 @@ void Conditions::toggleStateChange() {
     updateState();      
   }
 
-  // check for pass condition for toggles
-  // ↓  ↑  ↑  ↓  ↑ 
+  // check for pass condition for toggles (↓  ↑  ↑  ↓  ↑ )
   if (!buttons.toggles[0] && buttons.toggles[1] && buttons.toggles[2] && !buttons.toggles[3] && buttons.toggles[4]) {
     Serial.println("Toggles Correct!");
     speaker.openLock();
     lock.open();
+  } else {
+    // make sure to close the lock if toggles aren't correct
+    lock.close();
   }
 
   printStatus();

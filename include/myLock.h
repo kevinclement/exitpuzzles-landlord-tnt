@@ -17,6 +17,7 @@ public:
   void handle();
   void teardown();
   void open();
+  void close();
 
 private:
   Conditions &_conditions;
