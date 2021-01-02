@@ -44,6 +44,7 @@ public:
   void overrideDoorAjar(bool enable);
   void disableCodeAfterWin();
   void forceWin();
+  void reset();
   bool _overrideWinButton;
 
   void wireStateChange();

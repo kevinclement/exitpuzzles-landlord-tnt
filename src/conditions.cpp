@@ -2,6 +2,7 @@
 #include "conditions.h"
 #include "consts.h"
 #include "version.h"
+#include "SoftReset.h"
 
 Conditions::Conditions() 
   : display(),
@@ -424,4 +425,11 @@ void Conditions::lightSensed() {
 void Conditions::disableCodeAfterWin() {
   Serial.println("Disabling code after win mode");
   _codeAfterWin = false;
+}
+
+void Conditions::reset() {
+  Serial.println("Reset entered, rebooting now...");
+  display.clear();
+  display.update(true, "REBOOTING...    ");
+  soft_restart();
 }

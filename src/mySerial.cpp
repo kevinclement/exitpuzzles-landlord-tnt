@@ -1,6 +1,5 @@
 #include "Arduino.h"
 #include "conditions.h"
-#include "SoftReset.h"
 
 MySerial::MySerial(Conditions &conditions)
   : _conditions(conditions)
@@ -40,8 +39,7 @@ void MySerial::handle() {
     }
 
     if (command == "reset") {
-      Serial.println("reset entered");
-      soft_restart();
+      _conditions.reset();
     } 
     else if (command == "set") {
       // expecting format 's hh:mm:ss'

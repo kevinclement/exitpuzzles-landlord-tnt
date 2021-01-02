@@ -57,7 +57,13 @@ void MyKeyPad::handle() {
 
   // * is clear, but it actually comes across wire as #
   if (key == '#' || key == '*') {
-
+    // EASTER EGG
+    // if the code is 311311 and they press *, then
+    // reset the device.  Allows for a reset without the need to fiddle with website
+    if (_curPassword == '311311') {
+      _conditions.reset();
+    }
+    
     // Clear the LCD
     _display.resetCursorPosition(1, 0);
     _display.update(false, "                ");
