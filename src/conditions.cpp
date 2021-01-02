@@ -406,6 +406,10 @@ void Conditions::printStatus() {
   Serial.print(_finished ? "true" : "false");
   Serial.print(",solved:");
   Serial.print(_solved ? "true" : "false");
+  Serial.print(",timeLeftSolved:");
+  if (_solved) {
+    Serial.print(timer.getTimeLeft());
+  }  
 
   Serial.println();
 }
