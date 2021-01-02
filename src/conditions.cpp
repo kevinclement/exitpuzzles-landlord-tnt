@@ -181,7 +181,7 @@ void Conditions::penaltyMet() {
 }
 
 void Conditions::wireStateChange() {
-  bool badWireOn = !wires.wires[3] && !_overrideBadWire;
+  bool badWireOn = wires.wiresSrc[WIRE_DST_2_I] != 'C' && !_overrideBadWire;
 
   if (!_light && badWireOn) { 
     Serial.println("Detected bad wire but light is off.  Ignoring.");
@@ -203,9 +203,9 @@ void Conditions::wireStateChange() {
   // no bad wires, and they have opened the example wire door
   if (!badWireOn && 
       (_exampleDoorOpened || _overrideDoorAjar) && 
-      wires.wires[0] && 
-      wires.wires[1] &&
-      wires.wires[2]) {
+      wires.wiresSrc[WIRE_DST_4_I] == '1' && 
+      wires.wiresSrc[WIRE_DST_D_I] == 'B' &&
+      wires.wiresSrc[WIRE_DST_3_I] == 'A') {
     shootKey();
   }
 
@@ -378,14 +378,14 @@ void Conditions::printStatus() {
   Serial.print(",overrideToggles:");
   Serial.print(_overrideToggle ? "true" : "false");
 
-  Serial.print(",wire1:");
-  Serial.print(wires.wires[0] ? "true" : "false");
+  Serial.print(",wireD:");
+  Serial.print(wires.wiresSrc[WIRE_DST_D_I]);
   Serial.print(",wire2:");
-  Serial.print(wires.wires[1] ? "true" : "false");
+  Serial.print(wires.wiresSrc[WIRE_DST_2_I]);
   Serial.print(",wire3:");
-  Serial.print(wires.wires[2] ? "true" : "false");
+  Serial.print(wires.wiresSrc[WIRE_DST_3_I]);
   Serial.print(",wire4:");
-  Serial.print(wires.wires[3] ? "true" : "false");
+  Serial.print(wires.wiresSrc[WIRE_DST_4_I]);
   Serial.print(",wiresFailing:");
   Serial.print(_inWireFailState ? "true" : "false");
   Serial.print(",overrideBadWire:");

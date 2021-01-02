@@ -8,10 +8,33 @@ class Conditions;
 //   B->D : A1 (4.7k resistor - 125 avg reading)
 //   A->3 : A2 (10k resistor  - 228 avg reading)
 //   C->2 : A3 (no resistor   -  15 avg reading)
-#define WIRE1   A0
-#define WIRE2   A1
-#define WIRE3   A2
-#define BADWIRE A3
+
+// Source Wires - they control the signal strength
+//  1: 700-775
+//  A: 200-275
+//  B: 100-175
+//  C: 0-75
+#define WIRE_SRC_1_LOW      700
+#define WIRE_SRC_1_HIGH     775
+#define WIRE_SRC_A_LOW      200
+#define WIRE_SRC_A_HIGH     275
+#define WIRE_SRC_B_LOW      100
+#define WIRE_SRC_B_HIGH     175
+#define WIRE_SRC_C_LOW        0
+#define WIRE_SRC_C_HIGH      75
+#define WIRE_SRC_UNPLUGGED  800
+
+// Destination Wires
+#define WIRE_DST_4   A0
+#define WIRE_DST_D   A1
+#define WIRE_DST_3   A2
+#define WIRE_DST_2   A3
+
+// Array mappings for destination so I stop going crazy
+#define WIRE_DST_4_I 0
+#define WIRE_DST_D_I 1
+#define WIRE_DST_3_I 2
+#define WIRE_DST_2_I 3
 
 class MyWires {
 public:
@@ -21,7 +44,7 @@ public:
   void teardown();
 
   // exposed state so condition can use it properly
-  bool wires[4] = { false, false, false, true };  // start out assuming wire 4 is plugged in
+  char wiresSrc[4] = { 'U', 'U', 'U', 'C' };      // start out assuming wire 4 is plugged in
                                                   // so we don't cause a change state right away
 
 private:
@@ -29,11 +52,12 @@ private:
 
   long lastDebounceTime = 0; 
   long debounceDelay = 400;
-  
-  bool lastWires[4] = { false, false, false, true };
-  bool curWires[4]  = { false, false, false, true };
 
-  void checkWire(int reading, int lower, int upper, bool &wireOn);
+  char lastWiresSrc[4] = { 'U', 'U', 'U', 'C' };
+  char curWiresSrc[4]  = { 'U', 'U', 'U', 'C' };
+
+  void checkWire(int reading, char &wireOn);
+  char determineSource(int sig);
 };
 
 #endif
