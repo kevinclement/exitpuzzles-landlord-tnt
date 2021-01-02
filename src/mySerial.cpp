@@ -80,6 +80,10 @@ void MySerial::handle() {
       Serial.println("Turning off win button.");
       _conditions.overrideWinButton();
     }
+    else if (command == "mute") {
+      Serial.println("Toggling ticker sound.");
+      _conditions.speaker.toggleTickEnabled();
+    }
     else if (command == "doorajar") {
       if (value == "0") {
         Serial.println("Turning off door ajar sensor.");
