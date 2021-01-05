@@ -54,7 +54,14 @@ void Conditions::setup() {
 }
 
 void Conditions::handle() {
-  
+  if (!_disabledDisplays && _finishedAt > 0 && (millis() - _finishedAt) > TURN_OFF_TIMEOUT_MS) {
+    Serial.println("Finish time-out.  Turning of displays for the night...");
+    
+    _disabledDisplays = true;
+    display.off();
+    timer.off();
+  }
+
   // handle the toggle buttons
   buttons.handle();
 
@@ -323,7 +330,7 @@ void Conditions::shootKey() {
 void Conditions::teardown() {
   
   // store finished state
-  _finished = true;
+  _finishedAt =  millis();
 
   // let all the components get a chance to turn off
   display.teardown();
@@ -406,7 +413,7 @@ void Conditions::printStatus() {
   Serial.print(_overrideWinButton ? "true" : "false");
 
   Serial.print(",finished:");
-  Serial.print(_finished ? "true" : "false");
+  Serial.print(_finishedAt > 0 ? "true" : "false");
   Serial.print(",solved:");
   Serial.print(_solved ? "true" : "false");
   Serial.print(",timeLeftSolved:");
