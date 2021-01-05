@@ -205,8 +205,12 @@ void Conditions::wireStateChange() {
     
     // A bad wire was plugged in during this state change
     // If the light is turned on then we should give a penalty
-    // TODO: add check for light once I've tested wired in from pi
-    penalty(true);
+    if (!_light) {
+      Serial.println("Detected incorrect wire but light is off.  Ignoring.");
+    } else {
+      penalty(true);
+    }
+    
   } else {
     // check for all wires being turned on
     // no bad wires, and they have opened the example wire door
