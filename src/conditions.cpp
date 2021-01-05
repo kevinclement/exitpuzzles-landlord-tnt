@@ -181,6 +181,7 @@ void Conditions::penaltyMet() {
 }
 
 void Conditions::wireStateChange() {
+  Serial.println("Wire State Change Detected...");
   bool badWireOn = wires.wiresSrc[WIRE_DST_2_I] != 'C' && !_overrideBadWire;
 
   if (!_light && badWireOn) { 
@@ -188,65 +189,68 @@ void Conditions::wireStateChange() {
     badWireOn = false;
   }
 
+  // Detect Bad Red Wire
   if (badWireOn && !_inWireFailState) {
     Serial.println("Permanent penalty: missing red wire");
     _inWireFailState = true;
     updateState();
   }
+  else if (badWireOn && _inWireFailState && wires.wiresSrc[WIRE_DST_2_I] != 'U') {
+    Serial.println("Permanent penalty: red wire plugged into wrong spot");
+    // NOTE: this gets parsed from pi side to specialize the audio message
+  }
   else if (!badWireOn && _inWireFailState) {
     Serial.println("Permanent penalty fixed: red wire");
     _inWireFailState = false;
-    updateState();    
+    updateState();
   }
 
-  if (!checkBadWire('4', 0, WIRE_DST_4_I, '1') ||
-      !checkBadWire('D', 1, WIRE_DST_D_I, 'B') || 
-      !checkBadWire('3', 3, WIRE_DST_3_I, 'A')) {
-    
-    // A bad wire was plugged in during this state change
-    // If the light is turned on then we should give a penalty
-    if (!_light) {
-      Serial.println("Detected incorrect wire but light is off.  Ignoring.");
-    } else {
-      penalty(true);
-    }
-    
-  } else {
-    // check for all wires being turned on
-    // no bad wires, and they have opened the example wire door
-    if (!badWireOn && 
-      (_exampleDoorOpened || _overrideDoorAjar) && 
-      wires.wiresSrc[WIRE_DST_4_I] == '1' && 
-      wires.wiresSrc[WIRE_DST_D_I] == 'B' &&
-      wires.wiresSrc[WIRE_DST_3_I] == 'A') {
-      shootKey();
-    }
+  // Check for bad state of black wires
+  bool badBlackWire = checkBlackWire('4', 0, WIRE_DST_4_I, '1') ||
+                      checkBlackWire('D', 1, WIRE_DST_D_I, 'B') || 
+                      checkBlackWire('3', 3, WIRE_DST_3_I, 'A');
+
+  // only do black penalty if red doesn't have an issue
+  if (!badWireOn && badBlackWire) {
+    // This is what triggers pi to play sound
+    Serial.println("Bad wire connection for black wire");
+    penalty(true);
+  }
+
+  // Check for win condition
+  if (!badWireOn && 
+    (_exampleDoorOpened || _overrideDoorAjar) &&       
+    wires.wiresSrc[WIRE_DST_4_I] == '1' && 
+    wires.wiresSrc[WIRE_DST_D_I] == 'B' &&
+    wires.wiresSrc[WIRE_DST_3_I] == 'A') {
+    shootKey();
   }
 
   printStatus();
 }
 
-bool Conditions::checkBadWire(char wire, int reportIndex, int srcIndex, char goodValue) {
-  // wire was fixed, or unplugged
-  if (_badWiresReported[reportIndex] && wires.wiresSrc[srcIndex] == 'U') {
-    Serial.print("Fixed bad wire connection for wire ");
-    Serial.println(wire);
-    _badWiresReported[reportIndex] = false;
-    return true;
-  }
-  
-  // check that we dectected a bad wire and this is the first time we've detected it
-  if ((wires.wiresSrc[srcIndex] != goodValue || !(_exampleDoorOpened || _overrideDoorAjar)) &&
-      wires.wiresSrc[srcIndex] != 'U' &&
-      wires.wiresSrc[srcIndex] != 'E' && 
-      !_badWiresReported[reportIndex]) {
+bool Conditions::checkBlackWire(char wire, int reportIndex, int srcIndex, char goodValue) {
+  // if the door isn't open then no value is good
+  if (!_badWiresReported[reportIndex] &&
+    wires.wiresSrc[srcIndex] != 'U' &&
+    (wires.wiresSrc[srcIndex] != goodValue || !(_exampleDoorOpened || _overrideDoorAjar))
+  ){
+    Serial.print("Bad wire ");
+    Serial.print(wire);
+    Serial.print(" DETECTED, wants ");
+    Serial.print(goodValue);
+    Serial.print(" but is ");
+    Serial.println(wires.wiresSrc[srcIndex]);
     _badWiresReported[reportIndex] = true;
-    Serial.print("Bad wire connection for wire ");
-    Serial.println(wire);
     return false;
+  } else if (_badWiresReported[reportIndex] && wires.wiresSrc[srcIndex] == 'U') {
+    Serial.print("Fixed bad wire ");
+    Serial.print(wire);
+    Serial.println(" by unplugging it");
+    _badWiresReported[reportIndex] = false;
   }
 
-  return true;
+  return false;
 }
 
 void Conditions::toggleStateChange() {
@@ -305,7 +309,8 @@ void Conditions::updateState() {
   if (_inToggleFailState) {
     display.update(true, "Incorrect Toggle");
   } else if (_inWireFailState) {
-    display.update(true, "Replace Red Wire");
+    display.update(true,  "Replace Red Wire");
+    display.update(false, "     in C-2     ");
   }
 
   // No penalties, back to normal

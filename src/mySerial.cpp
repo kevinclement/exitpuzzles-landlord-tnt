@@ -148,6 +148,11 @@ void MySerial::handle() {
 
       _conditions.wires.mockWireSrc[wire] = badState;
     }
+    else if (command == "light") {
+      // Mock override the light sensor
+      Serial.println("Simulating light turning on...");
+      _conditions.lightSensed();
+    }
     else if (command == "blink") {
       _conditions.display.blink();
     } else {

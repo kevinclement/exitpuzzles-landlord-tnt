@@ -68,7 +68,7 @@ private:
 
   void teardown();
   void updateState();
-  bool checkBadWire(char wire, int reportIndex, int srcIndex, char goodValue);
+  bool checkBlackWire(char wire, int reportIndex, int srcIndex, char goodValue);
 };
 
 #endif
