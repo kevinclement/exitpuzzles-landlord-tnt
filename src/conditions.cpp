@@ -236,7 +236,7 @@ bool Conditions::checkBadWire(char wire, int reportIndex, int srcIndex, char goo
   }
   
   // check that we dectected a bad wire and this is the first time we've detected it
-  if (wires.wiresSrc[srcIndex] != goodValue &&
+  if ((wires.wiresSrc[srcIndex] != goodValue || !(_exampleDoorOpened || _overrideDoorAjar)) &&
       wires.wiresSrc[srcIndex] != 'U' &&
       wires.wiresSrc[srcIndex] != 'E' && 
       !_badWiresReported[reportIndex]) {
