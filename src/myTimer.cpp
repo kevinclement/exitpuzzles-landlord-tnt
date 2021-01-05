@@ -11,10 +11,6 @@ void MyTimer::setup() {
   lc.shutdown(0, false); // Enable display
   lc.setIntensity(0, DSP_BRIGHTNESS);  // Set brightness level (0 is min, 15 is max)
   lc.clearDisplay(0); // Clear display register
-
-  // startup with the device shutdown
-  // then when we get light turn it on
-  off();
 }
 
 void MyTimer::teardown() {
