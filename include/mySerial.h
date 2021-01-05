@@ -14,6 +14,8 @@ public:
 private:
   Conditions &_conditions;
   bool _permanentPenalty = false;
+
+  void SplitDash(String str, char &first, char &second);
 };
 
 #endif

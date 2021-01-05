@@ -199,17 +199,50 @@ void Conditions::wireStateChange() {
     updateState();    
   }
 
-  // check for all wires being turned on
-  // no bad wires, and they have opened the example wire door
-  if (!badWireOn && 
+  if (!checkBadWire('4', 0, WIRE_DST_4_I, '1') ||
+      !checkBadWire('D', 1, WIRE_DST_D_I, 'B') || 
+      !checkBadWire('3', 3, WIRE_DST_3_I, 'A')) {
+    
+    // A bad wire was plugged in during this state change
+    // If the light is turned on then we should give a penalty
+    // TODO: add check for light once I've tested wired in from pi
+    penalty(true);
+  } else {
+    // check for all wires being turned on
+    // no bad wires, and they have opened the example wire door
+    if (!badWireOn && 
       (_exampleDoorOpened || _overrideDoorAjar) && 
       wires.wiresSrc[WIRE_DST_4_I] == '1' && 
       wires.wiresSrc[WIRE_DST_D_I] == 'B' &&
       wires.wiresSrc[WIRE_DST_3_I] == 'A') {
-    shootKey();
+      shootKey();
+    }
   }
 
   printStatus();
+}
+
+bool Conditions::checkBadWire(char wire, int reportIndex, int srcIndex, char goodValue) {
+  // wire was fixed, or unplugged
+  if (_badWiresReported[reportIndex] && wires.wiresSrc[srcIndex] == 'U') {
+    Serial.print("Fixed bad wire connection for wire ");
+    Serial.println(wire);
+    _badWiresReported[reportIndex] = false;
+    return true;
+  }
+  
+  // check that we dectected a bad wire and this is the first time we've detected it
+  if (wires.wiresSrc[srcIndex] != goodValue &&
+      wires.wiresSrc[srcIndex] != 'U' &&
+      wires.wiresSrc[srcIndex] != 'E' && 
+      !_badWiresReported[reportIndex]) {
+    _badWiresReported[reportIndex] = true;
+    Serial.print("Bad wire connection for wire ");
+    Serial.println(wire);
+    return false;
+  }
+
+  return true;
 }
 
 void Conditions::toggleStateChange() {

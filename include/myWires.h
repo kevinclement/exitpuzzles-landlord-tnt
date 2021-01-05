@@ -47,6 +47,8 @@ public:
   char wiresSrc[4] = { 'U', 'U', 'U', 'C' };      // start out assuming wire 4 is plugged in
                                                   // so we don't cause a change state right away
 
+  char mockWireSrc[4] =  { 'M', 'M', 'M', 'M' };  // mock that allows me to trigger wire connections remotely to
+                                                  // test things without having to be physically present
 private:
   Conditions &_conditions;
 
@@ -55,8 +57,9 @@ private:
 
   char lastWiresSrc[4] = { 'U', 'U', 'U', 'C' };
   char curWiresSrc[4]  = { 'U', 'U', 'U', 'C' };
+  
 
-  void checkWire(int reading, char &wireOn);
+  void checkWire(int reading, int index);
   char determineSource(int sig);
 };
 

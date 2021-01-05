@@ -64,8 +64,11 @@ private:
   bool _overrideToggle;
   bool _overrideBadWire;
 
+  bool _badWiresReported[4] = { false, false, false, false };
+
   void teardown();
   void updateState();
+  bool checkBadWire(char wire, int reportIndex, int srcIndex, char goodValue);
 };
 
 #endif

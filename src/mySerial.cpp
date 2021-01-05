@@ -110,6 +110,44 @@ void MySerial::handle() {
       Serial.println("Forcing a win.");
       _conditions.forceWin();
     }
+    else if (command == "M") {
+      // Passing State    Sample Failures   Simulate Unplugged    Turn back on reading
+      //   M D-B             M D-A               M D-U                M D-M
+      //   M 3-A             M 2-1
+      //   M 2-C             M 3-B
+      //   M 4-1             M 4-C
+      //  
+      // Possible Destinations (first char):
+      //   D,2,3,4
+      // Posible Sources (second char:
+      //   A,B,C,1
+      //
+      char w = ' ';
+      char badState = ' ';
+      SplitDash(value, w, badState);
+
+      int wire = -1;
+      if (w == 'D') {
+        wire = WIRE_DST_D_I;
+      } else if (w == '4') {
+        wire = WIRE_DST_4_I;
+      } else if (w == '3') {
+        wire = WIRE_DST_3_I;
+      } else if (w == '2') {
+        wire = WIRE_DST_2_I;
+      }
+
+      if (badState == ' ') {
+        badState = 'A';
+      }
+      
+      Serial.print("Setting mock state for wire ");
+      Serial.print(w);
+      Serial.print(" - ");
+      Serial.println(badState);
+
+      _conditions.wires.mockWireSrc[wire] = badState;
+    }
     else if (command == "blink") {
       _conditions.display.blink();
     } else {
@@ -117,6 +155,13 @@ void MySerial::handle() {
       Serial.print(command);
       Serial.println("'");
     }
+  }
+}
+
+void MySerial::SplitDash(String str, char &first, char &second) { 
+  first = str.charAt(0);
+  if (str.length() == 3 && str.charAt(1) == '-') {
+    second = str.charAt(2);
   }
 }
 

@@ -14,11 +14,11 @@ void MyWires::setup() {
   pinMode(WIRE_DST_2, INPUT_PULLUP); 
 }
 
-void MyWires::checkWire(int reading, char &wireOn) {
+void MyWires::checkWire(int reading, int index) {
   // determine source location of reading
   char src = determineSource(reading);
-  
-  wireOn = src;
+
+  curWiresSrc[index] = mockWireSrc[index] != 'M' ? mockWireSrc[index] : src;
 }
 
 void MyWires::handle() {
@@ -31,10 +31,10 @@ void MyWires::handle() {
   //   B->D : A1 (4.7k resistor - 125 avg reading)
   //   A->3 : A2 (10k resistor  - 228 avg reading)
   //   C->2 : A3 (no resistor   -  15 avg reading)
-  checkWire(analogRead(WIRE_DST_4), curWiresSrc[0]);
-  checkWire(analogRead(WIRE_DST_D), curWiresSrc[1]);
-  checkWire(analogRead(WIRE_DST_3), curWiresSrc[2]);
-  checkWire(analogRead(WIRE_DST_2), curWiresSrc[3]);
+  checkWire(analogRead(WIRE_DST_4), 0);
+  checkWire(analogRead(WIRE_DST_D), 1);
+  checkWire(analogRead(WIRE_DST_3), 2);
+  checkWire(analogRead(WIRE_DST_2), 3);
   
   if ((curWiresSrc[0] != lastWiresSrc[0]) || 
       (curWiresSrc[1] != lastWiresSrc[1]) || 
