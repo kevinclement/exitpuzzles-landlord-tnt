@@ -134,9 +134,6 @@ void Conditions::tryCode() {
 
     Serial.print("Invalid password tried: ");
     Serial.println(keypad.getPassword());
-
-    // TODO: can remove this if I update for every character press
-    printStatus();
   }
 }
 
@@ -429,7 +426,6 @@ void Conditions::printStatus() {
   Serial.print(",buildDate:");
   Serial.print(DATE_NOW);
 
-  // TODO: should I just send all 3 parts here?
   Serial.print(",time:");
   Serial.print(timer.getTimeLeft());
 
