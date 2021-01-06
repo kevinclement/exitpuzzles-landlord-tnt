@@ -43,7 +43,7 @@ private:
   bool enabled               = true;  // flag to enable timer
   unsigned long previousTime = 0;     // tracks last time we fired the timer 
 
-  int interval        = STANDARD_INTERVAL; // allows for variable times
+  unsigned int interval = STANDARD_INTERVAL; // allows for variable times
   int hours           = TIMER_HOURS;
   int minutes         = TIMER_MINUTES;
   int seconds         = TIMER_SECONDS;
@@ -56,11 +56,11 @@ private:
   long glitch_started = 0;
 
   // blink settings
-  bool blinkEnabled       = false;
-  unsigned long blinkTime = 0;
-  bool blinkOn            = false;
-  int blinkInterval       = 600;
-  int blinkTimes          = 3;
+  bool blinkEnabled          = false;
+  unsigned long blinkTime    = 0;
+  bool blinkOn               = false;
+  unsigned int blinkInterval = 600;
+  unsigned int blinkTimes    = 3;
   
   
   void setDisplay(int hours, int minutes, int seconds, int milliseconds, LedControl lc);

@@ -18,11 +18,7 @@ void MySerial::teardown() {
   // noop: I actually want to keep this working
 }
 
-void MySerial::handle() {
-  int hours = 0;
-  int minutes = 0;
-  int seconds = 0;
-  
+void MySerial::handle() { 
   // check if we need to read from serial
   if (Serial.available()) {
     String msg = Serial.readStringUntil('\n');
@@ -31,7 +27,7 @@ void MySerial::handle() {
     String value;
 
     // check if we need to split on space for advance commands
-    for (int i = 0; i <= msg.length(); i++) {
+    for (unsigned int i = 0; i <= msg.length(); i++) {
       if (msg.charAt(i) == ' ') {
         command = msg.substring(0, i);
         value = msg.substring(i+1, msg.length());

@@ -21,8 +21,8 @@ public:
 private:
   LiquidCrystal_I2C _lcd;
   int _blinksLeft = 0;
-  long _lastBlinkTime = 0; 
-  long _blinkDelay = 150;
+  unsigned long _lastBlinkTime = 0; 
+  unsigned long _blinkDelay = 150;
   int TIMES_TO_BLINK = 14;  // should equal 7 total, off then on
 };
 
