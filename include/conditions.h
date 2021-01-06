@@ -21,13 +21,13 @@ public:
 
   MyDisplay display;
   MyTimer timer;
+  MyWires wires;
+  MyLock lock;
   MyKeyPad keypad;
   MySpeaker speaker;
   MySerial serial;
   MyButtons buttons;
-  MyLightSensor lightSensor;
-  MyWires wires;
-  MyLock lock;
+  MyLightSensor lightSensor;  
   MyKeyShooter keyShooter;
 
   void setup();

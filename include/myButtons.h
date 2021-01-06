@@ -40,8 +40,8 @@ private:
   bool curWireDoor = false;
   bool lastWireDoor = false;
 
-  long lastDebounceTime = 0; 
-  long debounceDelay = 100;
+  unsigned long lastDebounceTime = 0; 
+  unsigned long debounceDelay = 100;
 
   void checkButton(int reading, bool &btnOn);
 };

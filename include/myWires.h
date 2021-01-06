@@ -52,8 +52,8 @@ public:
 private:
   Conditions &_conditions;
 
-  long lastDebounceTime = 0; 
-  long debounceDelay = 400;
+  unsigned long lastDebounceTime = 0; 
+  unsigned long debounceDelay = 400;
 
   char lastWiresSrc[4] = { 'U', 'U', 'U', 'C' };
   char curWiresSrc[4]  = { 'U', 'U', 'U', 'C' };

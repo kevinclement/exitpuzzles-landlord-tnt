@@ -240,7 +240,6 @@ void MyTimer::glitch() {
 
 // Set the display given the value
 void MyTimer::setDisplay(int hours, int minutes, int seconds, int milliseconds, LedControl lc) {
-  int returnVal = 0;
   int decimal[8] = {0};
 
   // write out the time every 2 minutes, do it on the 10s mark to give me time to respond in the pi
