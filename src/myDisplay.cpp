@@ -16,10 +16,6 @@ void MyDisplay::setup() {
   _lcd.print(DEFAULT_DISPLAY);
   _lcd.setCursor(0, 1);
   _lcd.cursor_on();
-
-  // start out with display off
-  // when light is detected it will turn on
-  off();
 }
 
 void MyDisplay::handle() {

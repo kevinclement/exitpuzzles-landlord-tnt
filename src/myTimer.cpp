@@ -11,10 +11,6 @@ void MyTimer::setup() {
   lc.shutdown(0, false); // Enable display
   lc.setIntensity(0, DSP_BRIGHTNESS);  // Set brightness level (0 is min, 15 is max)
   lc.clearDisplay(0); // Clear display register
-
-  // startup with the device shutdown
-  // then when we get light turn it on
-  off();
 }
 
 void MyTimer::teardown() {
@@ -86,6 +82,9 @@ void MyTimer::handle() {
         // one last update to clear the display
         setDisplay(hours, minutes, seconds, milliseconds, lc);
 
+        // now tell the display to glitch
+        glitch_started = millis();
+
         // boom it
         _conditions.lose();
       }
@@ -122,6 +121,11 @@ void MyTimer::handle() {
         blinkEnabled = false;
       }
     }   
+  }
+
+  // glitch display if they lost
+  if (glitch_started != 0) {
+    glitch();
   }
 }
 
@@ -186,6 +190,52 @@ void MyTimer::setTimeLeft(int h, int m, int s) {
   hours = h;
   minutes = m;
   seconds = s;
+}
+
+void MyTimer::glitch() {
+  const int SHOW_MIN_MS = 100;
+  const int SHOW_MAX_MS = 400;
+  const int HIDE_MIN_MS = 50;
+  const int HIDE_MAX_MS = 250;
+  const int GLITCH_TIME_TO_RUN_MS = 8500;
+
+  static bool bitSet = false;
+
+  static int showCount = random(SHOW_MIN_MS, SHOW_MAX_MS);
+  static int hideCount = random(HIDE_MIN_MS, HIDE_MAX_MS);
+
+  // how long to display glitch
+  if (millis() - glitch_started > GLITCH_TIME_TO_RUN_MS) {
+    glitch_started = 0;
+    lc.clearDisplay(0);
+    return;
+  }
+
+  static long glitch_started_loop = millis();
+  long elapsed = millis() - glitch_started_loop;
+
+  if (elapsed > hideCount && !bitSet) {
+    // set random numbers
+    for (int i=0; i < random(3, 8); i++) {
+      // no advanced smarts for uniqueness
+      lc.setRow(0,random(0,8),random(1, 127));
+    }
+    bitSet = true;
+  } else if (elapsed > hideCount + showCount) {
+      lc.setRow(0,0,0);
+      lc.setRow(0,1,0);
+      lc.setRow(0,2,0);
+      lc.setRow(0,3,0);
+      lc.setRow(0,4,0);
+      lc.setRow(0,5,0);
+      lc.setRow(0,6,0);
+      lc.setRow(0,7,0);
+
+      glitch_started_loop = millis();
+      bitSet = false;
+      showCount = random(SHOW_MIN_MS, SHOW_MAX_MS);
+      hideCount = random(HIDE_MIN_MS, HIDE_MAX_MS);
+  } 
 }
 
 // Set the display given the value

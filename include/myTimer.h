@@ -53,6 +53,8 @@ private:
   int penaltySeconds  = -1;
   bool warningPrinted[4] = {false};
 
+  long glitch_started = 0;
+
   // blink settings
   bool blinkEnabled       = false;
   unsigned long blinkTime = 0;
@@ -60,7 +62,9 @@ private:
   int blinkInterval       = 600;
   int blinkTimes          = 3;
   
+  
   void setDisplay(int hours, int minutes, int seconds, int milliseconds, LedControl lc);
+  void glitch();
 };
 
 

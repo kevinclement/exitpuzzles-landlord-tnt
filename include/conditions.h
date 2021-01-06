@@ -12,6 +12,9 @@
 #include "myLock.h"
 #include "myKeyShooter.h"
 
+// When to turn off the displays so we don't run them through the night
+#define TURN_OFF_TIMEOUT_MS 2700000
+
 class Conditions {
 public:
   Conditions();
@@ -52,7 +55,8 @@ public:
   void wireDoorStateChange();
     
 private:
-  bool _finished;
+  long _finishedAt = 0;
+  bool _disabledDisplays = false;
   bool _solved = false;
   bool _solvedKey;
   bool _light = false;
