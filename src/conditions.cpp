@@ -286,7 +286,7 @@ void Conditions::toggleStateChange() {
     lock.open();
   } else {
     // make sure to close the lock if toggles aren't correct
-    lock.close();
+    lock.close(false);
   }
 
   printStatus();
@@ -361,11 +361,32 @@ void Conditions::forceWin() {
 // Function to shoot key
 void Conditions::shootKey() {
   if (!_solvedKey) {
-    keyShooter.shoot();
+    keyShooter.up();
     speaker.shootKey();
     _solvedKey = true;
     printStatus();
   }
+}
+
+// These two control just the solenoid
+// no speaker, or solved state change
+void Conditions::upKey() {
+  keyShooter.up();
+  printStatus();
+}
+void Conditions::downKey() {
+  keyShooter.down(false);
+  printStatus();
+}
+
+// These two just control the lock solenoid
+void Conditions::lockOpen() {
+  lock.open();
+  printStatus();
+}
+void Conditions::lockClose() {
+  lock.close(false);
+  printStatus();
 }
 
 // When the game is over turn everything off
@@ -426,6 +447,8 @@ void Conditions::printStatus() {
   Serial.print(_inToggleFailState ? "true" : "false");
   Serial.print(",overrideToggles:");
   Serial.print(_overrideToggle ? "true" : "false");
+  Serial.print(",lockSolenoid:");
+  Serial.print(lock._open ? "true" : "false");
 
   Serial.print(",wireD:");
   Serial.print(wires.wiresSrc[WIRE_DST_D_I]);
@@ -448,6 +471,8 @@ void Conditions::printStatus() {
   Serial.print(_overrideDoorAjar ? "true" : "false");
   Serial.print(",key:");
   Serial.print(_solvedKey ? "true" : "false");
+  Serial.print(",keySolenoid:");
+  Serial.print(keyShooter._up ? "true" : "false");
   Serial.print(",password:");
   Serial.print(keypad.getPassword());
 

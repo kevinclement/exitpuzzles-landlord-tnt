@@ -66,6 +66,26 @@ void MySerial::handle() {
       Serial.println("Overriding key shooter, shooting now.");
       _conditions.shootKey();
     }
+    else if (command == "keySolenoid") {
+      Serial.print("Overriding key solenoid, setting to: ");
+      Serial.println(value);
+
+      if (value == "1") {
+        _conditions.upKey();
+      } else {
+        _conditions.downKey();
+      }
+    }
+    else if (command == "lockSolenoid") {
+      Serial.print("Overriding lock solenoid, setting to: ");
+      Serial.println(value);
+
+      if (value == "1") {
+        _conditions.lockOpen();
+      } else {
+        _conditions.lockClose();
+      }
+    }
     else if (command == "wires") {
       Serial.println("Showing error that wires are incorrect.");
       _conditions.penalty(true);

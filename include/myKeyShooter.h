@@ -16,15 +16,16 @@ public:
   MyKeyShooter(Conditions &conditions);
   void setup();
   void handle();
-  void shoot();
+  void up();
+  void down(bool timeout);
   void teardown();
+
+  bool _up = false;
 
 private:
   Conditions &_conditions;
 
-  bool enabled = true;
-  bool solOn = false;
-  long turnedOn = 0;
+  long _poweredOnTime = 0;
 };
 
 #endif

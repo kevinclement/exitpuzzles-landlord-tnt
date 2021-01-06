@@ -17,12 +17,14 @@ public:
   void handle();
   void teardown();
   void open();
-  void close();
+  void close(bool timeout);
+
+  bool _open = false;
 
 private:
   Conditions &_conditions;
   long _poweredOnTime = 0;
-  bool _open = false;
+  
 };
 
 #endif

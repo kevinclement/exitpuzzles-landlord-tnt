@@ -15,7 +15,7 @@ void MyLock::handle() {
   // if we've shot the key and it's been more than timeout, turn off sol since it gets hot
   if (_open &&  (millis() - _poweredOnTime) > LOCK_SOL_TIMEOUT_MS) {
     Serial.println("Lock timeout. Turning off solenoid to reduce heat.");
-    close();
+    close(true);
   }
 
   digitalWrite(LOCK_PIN, _open ? RELAY_ON : RELAY_OFF);
@@ -24,8 +24,7 @@ void MyLock::handle() {
 void MyLock::teardown() {
   // since the solenoid gets hot
   // as an extra precaution I'm setting it forced off
-  close();
-  
+  close(false);
 }
 
 void MyLock::open() {
@@ -34,11 +33,17 @@ void MyLock::open() {
   _poweredOnTime = millis();
 }
 
-void MyLock::close() {
+void MyLock::close(bool timeout) {
   // only report to console if we've had a state change
   if (_open) {
     Serial.println("Lock Closing...");
   }
   
   _open = false;
+  _poweredOnTime = 0;
+
+    // if this was from a timeout we should update the status
+  if (timeout) {
+    _conditions.printStatus();
+  }
 }

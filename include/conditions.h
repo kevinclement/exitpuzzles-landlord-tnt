@@ -41,6 +41,10 @@ public:
   void printHelp();
   void printStatus();
   void shootKey();
+  void upKey();
+  void downKey();
+  void lockOpen();
+  void lockClose();
   void overrideWinButton();
   void overrideToggle();
   void overrideBadWire();
