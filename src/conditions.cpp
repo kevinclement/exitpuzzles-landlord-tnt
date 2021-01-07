@@ -55,11 +55,15 @@ void Conditions::setup() {
 
 void Conditions::handle() {
   if (!_disabledDisplays && _finishedAt > 0 && (millis() - _finishedAt) > TURN_OFF_TIMEOUT_MS) {
-    Serial.println("Finish time-out.  Turning of displays for the night...");
+    Serial.println("Finish time-out.  Turning off all things for the night...");
     
     _disabledDisplays = true;
     display.off();
     timer.off();
+
+    // should already be off but to make sure
+    keyShooter.down(true);
+    lock.close(true);
   }
 
   // handle the toggle buttons
