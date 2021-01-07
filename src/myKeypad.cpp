@@ -66,7 +66,7 @@ void MyKeyPad::handle() {
     }
 
     // special freq for clear
-    _conditions.speaker.beep(400, 70);
+    _conditions.speaker.beep(400, 180);
     
     // Clear the LCD
     _display.resetCursorPosition(1, 0);
@@ -78,8 +78,8 @@ void MyKeyPad::handle() {
     return;
   }
 
-  // audio feedback - randomize the freq a bit to add flavor
-  _conditions.speaker.beep(350 + random(100, 400), 30);
+  // audio feedback
+  _conditions.speaker.beep(1300, 180);
 
   // print key on lcd
   _display.updateChar(key);

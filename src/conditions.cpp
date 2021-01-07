@@ -199,7 +199,7 @@ void Conditions::wireStateChange() {
     _inWireFailState = true;
     updateState();
   }
-  else if (badWireOn && _inWireFailState && wires.wiresSrc[WIRE_DST_2_I] != 'U') {
+  else if (badWireOn && _inWireFailState && (wires.wiresSrc[WIRE_DST_4_I] == 'C' || wires.wiresSrc[WIRE_DST_D_I] == 'C' || wires.wiresSrc[WIRE_DST_3_I] == 'C')) {
     Serial.println("Permanent penalty: red wire plugged into wrong spot");
     // NOTE: this gets parsed from pi side to specialize the audio message
   }
@@ -210,12 +210,14 @@ void Conditions::wireStateChange() {
   }
 
   // Check for bad state of black wires
-  bool badBlackWire = checkBlackWire('4', 0, WIRE_DST_4_I, '1') ||
-                      checkBlackWire('D', 1, WIRE_DST_D_I, 'B') || 
-                      checkBlackWire('3', 3, WIRE_DST_3_I, 'A');
+  bool badBlackWire = !checkBlackWire('4', 0, WIRE_DST_4_I, '1') ||
+                      !checkBlackWire('D', 1, WIRE_DST_D_I, 'B') || 
+                      !checkBlackWire('3', 3, WIRE_DST_3_I, 'A');
 
-  // only do black penalty if red doesn't have an issue
-  if (!badWireOn && badBlackWire) {
+  if (badWireOn && badBlackWire) {
+    Serial.println("Bad wire plugged in while red is still unplugged");
+    Serial.println("Permanent penalty: red wire plugged into wrong spot");
+  } else if (!badWireOn && badBlackWire) {
     // This is what triggers pi to play sound
     Serial.println("Bad wire connection for black wire");
     penalty(true);
@@ -254,7 +256,7 @@ bool Conditions::checkBlackWire(char wire, int reportIndex, int srcIndex, char g
     _badWiresReported[reportIndex] = false;
   }
 
-  return false;
+  return true;
 }
 
 void Conditions::toggleStateChange() {
@@ -321,6 +323,7 @@ void Conditions::updateState() {
   if (!_inToggleFailState && !_inWireFailState) {
     timer.permanentPenalty(false);
     display.update(true, DEFAULT_DISPLAY);
+    display.update(false, "                ");
     display.resetCursorPosition(1, 0);
     display.update(false, keypad.getPassword());
     keypad.setEnabled(true);

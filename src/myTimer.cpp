@@ -197,7 +197,7 @@ void MyTimer::glitch() {
   const int SHOW_MAX_MS = 400;
   const int HIDE_MIN_MS = 50;
   const int HIDE_MAX_MS = 250;
-  const int GLITCH_TIME_TO_RUN_MS = 8500;
+  const int GLITCH_TIME_TO_RUN_MS = 7000;
 
   static bool bitSet = false;
 
@@ -259,7 +259,7 @@ void MyTimer::setDisplay(int hours, int minutes, int seconds, int milliseconds, 
   
   byte highestNonZero = 0;
   
-  // now set all the digits using library
+    // now set all the digits using library
   for (int i=8; i>0; i--) {
     int pos = i - 1;
     bool showDot = (milliseconds != -1 && pos == 2) || (milliseconds == -1 && pos == 4);
