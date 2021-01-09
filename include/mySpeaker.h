@@ -19,13 +19,13 @@ public:
   void shootKey();
   void openLock();
   void fail();
+  void uhoh();
   void penalty();
   void badSwitch();
   void teardown();
   
 private:
   bool _tickSoundEnabled = false; // should tick sound be enabled?
-  void uhoh();
 };
 
 #endif

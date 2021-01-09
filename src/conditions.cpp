@@ -51,6 +51,9 @@ void Conditions::setup() {
 
   // Print help out to serial
   printHelp();
+
+  // Play uhoh on reset
+  speaker.uhoh();
 }
 
 void Conditions::handle() {
