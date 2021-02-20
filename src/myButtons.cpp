@@ -85,7 +85,9 @@ void MyButtons::handle() {
 }
 
 void MyButtons::teardown() {
-  enabled = false;
+  // NOTE: turned this disable off for now by request of kyle
+  // he wanted to be able to still trigger toggles when the machine is finished
+  // enabled = false;
 }
 
 void MyButtons::checkButton(int reading, bool &btnOn) {
