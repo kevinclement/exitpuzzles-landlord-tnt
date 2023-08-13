@@ -484,6 +484,8 @@ void Conditions::printStatus() {
 
   Serial.print(",overrideWinButton:");
   Serial.print(_overrideWinButton ? "true" : "false");
+  Serial.print(",exitCode:");
+  Serial.print(_codeAfterWin ? "true" : "false");
 
   Serial.print(",finished:");
   Serial.print(_finishedAt > 0 ? "true" : "false");
@@ -505,9 +507,9 @@ void Conditions::lightSensed() {
   printStatus();
 }
 
-void Conditions::disableCodeAfterWin() {
-  Serial.println("Disabling code after win mode");
-  _codeAfterWin = false;
+void Conditions::setCodeAfterWin(bool enable) {
+  _codeAfterWin = enable;
+  printStatus();
 }
 
 void Conditions::reset() {

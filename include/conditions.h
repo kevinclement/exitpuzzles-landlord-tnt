@@ -49,7 +49,7 @@ public:
   void overrideToggle();
   void overrideBadWire();
   void overrideDoorAjar(bool enable);
-  void disableCodeAfterWin();
+  void setCodeAfterWin(bool enable);
   void forceWin();
   void reset();
   bool _overrideWinButton;

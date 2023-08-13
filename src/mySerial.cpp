@@ -112,15 +112,24 @@ void MySerial::handle() {
         Serial.println("Unknown set value for door ajar.");
       }
     }
+    else if (command == "exitcode") {
+      if (value == "0") {
+        Serial.println("Turning off exit code.");
+        _conditions.setCodeAfterWin(false);
+      } 
+      else if (value == "1") {
+        Serial.println("Turning on exit code.");
+        _conditions.setCodeAfterWin(true);
+      } else {
+        Serial.println("Unknown set value for exit code.");
+      }
+    }
     else if (command == "stop") {
       Serial.println("Turning off toggle penalty.");
       _conditions.overrideToggle();
     }
     else if (command == "status") {
       _conditions.printStatus();
-    }
-    else if (command == "code") {
-      _conditions.disableCodeAfterWin();
     }
     else if (command == "win") {
       Serial.println("Forcing a win.");
