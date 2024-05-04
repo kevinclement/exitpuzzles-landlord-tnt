@@ -221,6 +221,11 @@ void Conditions::wireStateChange() {
                       !checkBlackWire('D', 1, WIRE_DST_D_I, 'B') || 
                       !checkBlackWire('3', 3, WIRE_DST_3_I, 'A');
 
+  // If there is an override in place, also override the black wire errors
+  if (_overrideBadWire) {
+    badBlackWire = false;
+  }
+
   if (badWireOn && badBlackWire) {
     Serial.println("Bad wire plugged in while red is still unplugged");
     Serial.println("Permanent penalty: red wire plugged into wrong spot");
