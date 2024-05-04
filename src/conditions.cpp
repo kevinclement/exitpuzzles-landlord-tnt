@@ -242,6 +242,10 @@ void Conditions::wireStateChange() {
     wires.wiresSrc[WIRE_DST_D_I] == 'B' &&
     wires.wiresSrc[WIRE_DST_3_I] == 'A') {
     shootKey();
+
+    // once they've solve it, turn on the override so that
+    // we don't get wire errors moving forward
+    _overrideBadWire = true;
   }
 
   printStatus();
